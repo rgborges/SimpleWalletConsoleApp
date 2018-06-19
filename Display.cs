@@ -43,5 +43,12 @@ namespace SimpleWalletConsoleApp
                 }
             }
         }
+        public static void PrintSystemUsers(List<SystemUser> users)
+        {
+            foreach (SystemUser p in users)
+            {
+                Console.WriteLine(p);
+            }
+        }
     }
 }

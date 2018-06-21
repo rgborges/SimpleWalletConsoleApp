@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using SimpleWalletConsoleApp.Models;
+
 
 namespace SimpleWalletConsoleApp
 {
@@ -46,6 +49,32 @@ namespace SimpleWalletConsoleApp
         public static void PrintSystemUsers(List<SystemUser> users)
         {
             foreach (SystemUser p in users)
+            {
+                Console.WriteLine(p);
+            }
+        }
+        public static void PrintWallets()
+        {
+            Console.Clear();
+            foreach (Wallet p in Program.Wallets)
+            {
+                Console.WriteLine(p);
+            }
+        }
+        public static void PrintWalletTransactions()
+        {
+            Console.Clear();
+            Console.Write("Type the wallet id: ");
+            int id = int.Parse(Console.ReadLine());
+            int searchedIdWallet = Program.Wallets.FindIndex(x => x.Id == id);
+            if(searchedIdWallet == -1 )
+            {
+                throw new SimpleWalletException("Was not possible find this wallet Id :(  ... ");
+            }
+            Console.WriteLine("Wallet: ");
+            Console.WriteLine(Program.Wallets[searchedIdWallet]);
+            Console.WriteLine("Transactions in this wallet: ");
+            foreach (Transaction p in Program.Transactions.Where( x => x.Origin == Program.Wallets[searchedIdWallet]))
             {
                 Console.WriteLine(p);
             }

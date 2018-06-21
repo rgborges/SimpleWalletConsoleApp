@@ -6,8 +6,10 @@ namespace SimpleWalletConsoleApp
 {
     class Program
     {
-        private static List<Tag> Tags = new List<Tag>();
-        private static List<SystemUser> Users = new List<SystemUser>();
+        public static List<Tag> Tags = new List<Tag>();
+        public static List<SystemUser> Users = new List<SystemUser>();
+        public static List<Wallet> Wallets = new List<Wallet>();
+        public static List<Transaction> Transactions = new List<Transaction>();
         static void Main(string[] args)
         {
             // tags.Add(new Tag("Google", TagColor.Yellow));
@@ -22,7 +24,19 @@ namespace SimpleWalletConsoleApp
             Users.Add(new SystemUser("Daniel Rian", "drian", "1234"));
             Users.Add(new SystemUser("Marre Allison", "malison", "1234"));
 
-            Display.PrintSystemUsers(Users);
+            
+
+            Wallets.Add(new Wallet("Nubank", Users[0], 1));
+
+            Transactions.Add(new Transaction(12.90, "Bank", Wallets[0]));
+            Transactions.Add(new Transaction(20.6, "Tax", Wallets[0]));
+
+            Wallets[0].ImportTransactions(Transactions);
+
+            Display.PrintWalletTransactions();
+
+
+        
 
             Console.ReadLine();
         }

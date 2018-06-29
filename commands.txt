@@ -1,0 +1,10 @@
+#Commands
+
+
+
+SimpleWallet>--select-wallet
+//Select SimpleWallet
+
+
+SimpleWallet>--add receive 
+//Add a receive transaction

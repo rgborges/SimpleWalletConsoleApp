@@ -1,8 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-
+using System.Globalization;
+using System.Collections.Generic;
 using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Exceptions;
 using SimpleWalletConsoleApp.Models.Financial;
 
 
@@ -44,6 +45,67 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine(" 5. Come back");
             Console.WriteLine();
             Console.Write("Please type an option: ");
+        }
+        public static void PrintSelectWallet()
+        {
+            Console.WriteLine();
+            Console.WriteLine("You want to select a wallet instance to the workspace .. :");
+            Console.WriteLine();
+            PrintWallets();
+            Console.Write("Please select your wallet GUID: ");
+            Guid guidSearched = Guid.Parse(Console.ReadLine());
+            int walletSearchedIndex = Program.Wallets.FindIndex( x => x.Id == guidSearched);
+            if(walletSearchedIndex == -1)
+            {
+                throw new BusinessException("Business Error: Wallet guid not found ! please try again ..");
+            }
+            Program.CurrentWalletIndex = walletSearchedIndex;
+            Console.WriteLine($"You've selected the following wallet in the worksapce: {Program.Wallets[Program.CurrentWalletIndex]}");
+            Console.WriteLine();
+            ProgramMechanics.UpdateHeader(Program.Wallets[Program.CurrentWalletIndex].Name);
+        }
+        public static void PrintSystemWallets()
+        {
+             Console.WriteLine();
+             Console.WriteLine("Printing wallets registered in the system ... :");
+             foreach(Wallet p in Program.Wallets)
+             {
+                 Console.WriteLine(p);
+             }
+             Console.WriteLine();
+        }
+        public static void PrintAddNewReceive()
+        {
+            Console.WriteLine("You've selected to add a new receive to this model .. ");
+            BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
+            Console.WriteLine($"You want add a receive to wallet {Program.Wallets[Program.CurrentWalletIndex].Name} :");
+            Console.Write("Value: ");
+            double value = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            Console.Write("Description: ");
+            string description = Console.ReadLine();
+            TransactionType type = TransactionType.Receive;
+            Console.WriteLine("Do you want add Tag label to this receive (y/n)? ");
+            char answer = char.Parse(Console.ReadLine());
+            if(answer == 'y')
+            {
+               Console.Write("Select the Tag Name : ");
+               string tagName = Console.ReadLine();
+               Console.WriteLine("Searching in the tag list .. ");
+               Tag searchedTag = Program.Tags.Find( x => x.Name == tagName);
+               if(searchedTag == null)
+               {
+                   throw new BusinessException("Tag searched not found ! .. please have right that the tag exist ..  :( ");
+               }
+               Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
+               Program.Transactions.Add(receive);
+            }
+            else
+            {
+                Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
+                Program.Transactions.Add(receive);
+            }
+            Console.WriteLine("Receive added sucessfully ! .. :D  ");
+            Console.WriteLine();
         }
         public static void PrintTags()
         {
@@ -91,7 +153,6 @@ namespace SimpleWalletConsoleApp
         }
         public static void PrintWallets()
         {
-            Console.Clear();
             foreach (Wallet p in Program.Wallets)
             {
                 Console.WriteLine(p);
@@ -120,5 +181,12 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine("Exiting the program ...");
             Console.WriteLine("Bye Bye ;D ... Se ya!");
         }
+        public static void PrintNonCommandValid()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Command typed is invalid.. please try typing --help to view the commands accepted.");
+            Console.WriteLine();
+        }
+   
     }
 }

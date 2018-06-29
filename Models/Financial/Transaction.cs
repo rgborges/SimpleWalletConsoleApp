@@ -10,19 +10,22 @@ namespace SimpleWalletConsoleApp.Models.Financial
         public double Value { set; get;}
         public string Description { set; get;}
         public Tag Tag { set; get; }
+        public TransactionType Type {protected set; get;}
         public Wallet Origin { protected set; get;}
-        public Transaction(double value, string description, Wallet wallet)
+        public Transaction(double value, string description,TransactionType type, Wallet wallet)
         {
             this.Value = value;
             this.Description = description;
+            this.Type = type;
             this.Origin = wallet;
             this.Id = Guid.NewGuid();
         }
-        public Transaction(double value, string description, Wallet wallet, Tag tag)
+        public Transaction(double value, string description,TransactionType type, Wallet wallet, Tag tag)
         {
             this.Value = value;
             this.Description = description;
             this.Origin = wallet;
+            this.Type = type;
             this.Tag = tag;
             this.Id = Guid.NewGuid();
         }

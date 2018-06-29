@@ -1,6 +1,6 @@
 using System;
 
-namespace SimpleWalletConsoleApp.Models
+namespace SimpleWalletConsoleApp.Exceptions
 {
     public class SimpleWalletException : Exception
     {

@@ -1,39 +1,46 @@
 using System;
 using System.Collections.Generic;
+using SimpleWalletConsoleApp.Models;
 
-namespace SimpleWalletConsoleApp.Models
+namespace SimpleWalletConsoleApp.Models.Financial
 {
     public class Wallet
     {
-        public int Id { protected set; get;}
+        public Guid Id { protected set; get;}
         public string Name { set; get;}
         public SystemUser Owner { set; get;}
+        public double Ballance { protected set; get;}
         private List<Transaction> Transactions = new List<Transaction>();
         public Wallet(string name, SystemUser owner)
         {
             this.Name = name;
             this.Owner = owner;
-            this.Id = 0;
-        }
-        public Wallet(string name, SystemUser owner, int id)
-        {
-            this.Name = name;
-            this.Owner = owner;
-            this.Id = id;
+            this.Id = Guid.NewGuid();
         }
         public Wallet(string name, SystemUser owner, List<Transaction> transactions)
         {
             this.Name = name;
             this.Owner = owner;
-            this.Id = 0;
+            this.Id = Guid.NewGuid();
             ImportTransactions(transactions);
         }
-           public Wallet(string name, SystemUser owner, List<Transaction> transactions, int id)
+        public void Debit(Transaction transaction)
         {
-            this.Name = name;
-            this.Owner = owner;
-            this.Id = id;
-            ImportTransactions(transactions);
+            if (transaction == null)
+            {
+                throw new NullReferenceException("Error: transactions list object passed in Debit method in Wallet.Debit is null");
+            }
+            Ballance -= transaction.Value;
+            Transactions.Add(transaction);
+        }
+        public void Deposit(Transaction transaction)
+        {
+            if(transaction != null)
+            {
+                throw new NullReferenceException("Error: transactions list object passed in Deposit method in Wallet.Deposit is null");
+            }
+            Ballance += transaction.Value;
+            Transactions.Add(transaction);
         }
         public void ImportTransactions(List<Transaction> transactions)
         {
@@ -48,7 +55,7 @@ namespace SimpleWalletConsoleApp.Models
         }
         public override string ToString()
         {
-            return $"Id: {Id}, Title: {Name}, Owner: {Owner.FullName}";
+            return $"Title: {Name}, Owner: {Owner.FullName}, Id: {Id}";
         }
     }
 }

@@ -1,10 +1,12 @@
 using System;
+using System.Globalization;
+using SimpleWalletConsoleApp.Models;
 
-namespace SimpleWalletConsoleApp.Models
+namespace SimpleWalletConsoleApp.Models.Financial
 {
     public class Transaction
     {
-        public int Id { protected set; get;}
+        public Guid Id { protected set; get;}
         public double Value { set; get;}
         public string Description { set; get;}
         public Tag Tag { set; get; }
@@ -14,7 +16,7 @@ namespace SimpleWalletConsoleApp.Models
             this.Value = value;
             this.Description = description;
             this.Origin = wallet;
-            this.Id = 0;
+            this.Id = Guid.NewGuid();
         }
         public Transaction(double value, string description, Wallet wallet, Tag tag)
         {
@@ -22,19 +24,11 @@ namespace SimpleWalletConsoleApp.Models
             this.Description = description;
             this.Origin = wallet;
             this.Tag = tag;
-            this.Id = 0;
-        }
-        public Transaction(double value, string description, Wallet wallet, Tag tag, int id)
-        {
-            this.Value = value;
-            this.Description = description;
-            this.Origin = wallet;
-            this.Tag = tag;
-            this.Id = id;
+            this.Id = Guid.NewGuid();
         }
         public override string ToString()
         {
-            return $"Id: {Id}, Value: {Value}, Description: {Description}, Origin: {Origin.Owner}";
+            return $"Id: {Id}, Value: {Value.ToString(CultureInfo.InvariantCulture)} R$, Description: {Description}, Origin: {Origin.Owner}";
         }
     }
 }

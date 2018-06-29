@@ -3,16 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Models.Financial;
 
 
 namespace SimpleWalletConsoleApp
 {
     class Display
     {
-        public static void PrintTags(List<Tag> tags)
+        public static void PrintHeader(string header)
+        {
+            Console.Clear();
+            Console.WriteLine("Borges Sofwtare Labs - v 0.0.1 - SimpleWallet Console App 2018");
+            Console.WriteLine();
+            Console.Write($"{header}>");
+        }
+        public static void PrintMainMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Borges Sofwtare Labs - v 0.0.1 - SimpleWallet Console App 2018");
+            Console.WriteLine();
+            Console.WriteLine("Please type an option: ");
+            Console.WriteLine(" 1. List Tags"); 
+            Console.WriteLine(" 2. Add a Tag");
+            Console.WriteLine(" 3. List Wallets");
+            Console.WriteLine(" 4. List Transactions");
+            Console.WriteLine(" 5. Add Transactions");
+            Console.WriteLine();
+            Console.Write("Please type an option: ");
+        }
+        public static void PrintTagManagementMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Borges Sofwtare Labs - v 0.0.1 - SimpleWallet Console App 2018");
+            Console.WriteLine();
+            Console.WriteLine("Please type an option: ");
+            Console.WriteLine(" 1. List Tags"); 
+            Console.WriteLine(" 2. Add a Tag");
+            Console.WriteLine(" 3. Edit a Tag");
+            Console.WriteLine(" 4. Remove a Tag");
+            Console.WriteLine(" 5. Come back");
+            Console.WriteLine();
+            Console.Write("Please type an option: ");
+        }
+        public static void PrintTags()
         {
              var aux = Console.ForegroundColor;
-            foreach (Tag p in tags)
+            foreach (Tag p in Program.Tags)
             {
                 Console.Write(p);
                 Console.Write(", Color: ");
@@ -46,9 +82,9 @@ namespace SimpleWalletConsoleApp
                 }
             }
         }
-        public static void PrintSystemUsers(List<SystemUser> users)
+        public static void PrintSystemUsers()
         {
-            foreach (SystemUser p in users)
+            foreach (SystemUser p in Program.Users)
             {
                 Console.WriteLine(p);
             }
@@ -65,7 +101,7 @@ namespace SimpleWalletConsoleApp
         {
             Console.Clear();
             Console.Write("Type the wallet id: ");
-            int id = int.Parse(Console.ReadLine());
+            Guid id = Guid.Parse(Console.ReadLine());
             int searchedIdWallet = Program.Wallets.FindIndex(x => x.Id == id);
             if(searchedIdWallet == -1 )
             {
@@ -78,6 +114,11 @@ namespace SimpleWalletConsoleApp
             {
                 Console.WriteLine(p);
             }
+        }
+        public static void PrintMenuQuitMessage()
+        {
+            Console.WriteLine("Exiting the program ...");
+            Console.WriteLine("Bye Bye ;D ... Se ya!");
         }
     }
 }

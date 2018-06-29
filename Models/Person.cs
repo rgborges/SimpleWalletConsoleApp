@@ -4,16 +4,16 @@ namespace SimpleWalletConsoleApp.Models
 {
     public partial class Person
     {
-        public int Id { protected set; get;}
+        public Guid Id { protected set; get;}
         public string FullName { set; get;}
         public Person(string fullName)
         {
             this.FullName = fullName;
-            this.Id = 0;
+            this.Id = Guid.NewGuid();
         }
         public override string ToString()
         {
-            return $"Id: {Id}, Full Name: {FullName}";
+            return $"Full Name: {FullName}, Id: {Id}";
         }
     }
 }

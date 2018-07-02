@@ -1,10 +1,11 @@
 #Commands
 
+Sellect a Wallet instance into the program:
 
+    SimpleWallet>--select-wallet                            | Selects a wallet using its guid using wizard process.
 
-SimpleWallet>--select-wallet
-//Select SimpleWallet
+    SimpleWallet>--select-wallet -w <guid>                  | Selects a wallet using its guid.
 
+Adds a receive:
 
-SimpleWallet>--add receive 
-//Add a receive transaction
+    SimpleWallet>--add receive

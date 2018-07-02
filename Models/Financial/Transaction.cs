@@ -12,6 +12,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
         public Tag Tag { set; get; }
         public TransactionType Type {protected set; get;}
         public Wallet Origin { protected set; get;}
+        public DateTime Date { protected set; get;}
         public Transaction(double value, string description,TransactionType type, Wallet wallet)
         {
             this.Value = value;
@@ -19,6 +20,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
             this.Type = type;
             this.Origin = wallet;
             this.Id = Guid.NewGuid();
+            this.Date = DateTime.Now;
         }
         public Transaction(double value, string description,TransactionType type, Wallet wallet, Tag tag)
         {
@@ -28,6 +30,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
             this.Type = type;
             this.Tag = tag;
             this.Id = Guid.NewGuid();
+            this.Date = DateTime.Now;
         }
         public override string ToString()
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using SimpleWalletConsoleApp.Models;
 using SimpleWalletConsoleApp.Models.Financial;
 
@@ -52,12 +51,23 @@ namespace SimpleWalletConsoleApp
                                     }
                                 }
                             break;
+                            case "--add-receive":
+                            //TODO Adds an object to the model
+                                Display.PrintAddNewReceive();
+                                Console.ReadLine();
+                            break;
+                            case "--display-receives":
+                            //TODO: Display the last receives in this month
+                                Display.PrintReceives();
+                                Console.ReadLine();
+                            break;
                             case "--help":
                                 Console.WriteLine("You've typed help!");
                                 Console.ReadLine();
                             break;
-                            case "--quit":
-                            
+                            case "--quit": 
+                                Display.PrintMenuQuitMessage();
+                                looping = false;        
                             break;
                             default:
                                 Console.WriteLine("Option invalid!");
@@ -66,11 +76,10 @@ namespace SimpleWalletConsoleApp
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-
-                }
-                
+                    Console.WriteLine(e.Message);
+                }            
             }
 
             Console.ReadLine();

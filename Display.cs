@@ -84,7 +84,7 @@ namespace SimpleWalletConsoleApp
             Console.Write("Description: ");
             string description = Console.ReadLine();
             TransactionType type = TransactionType.Receive;
-            Console.WriteLine("Do you want add Tag label to this receive (y/n)? ");
+            Console.Write("Do you want add Tag label to this receive (y/n)? ");
             char answer = char.Parse(Console.ReadLine());
             if(answer == 'y')
             {
@@ -106,6 +106,43 @@ namespace SimpleWalletConsoleApp
             }
             Console.WriteLine("Receive added sucessfully ! .. :D  ");
             Console.WriteLine();
+        }
+        public static void PrintAddNewSpending()
+        {
+            Console.WriteLine("You've selected to add a new spending to this model .. ");
+            BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
+            Console.WriteLine($"You want add a spending to wallet {Program.Wallets[Program.CurrentWalletIndex].Name} :");
+            Console.Write("Value: ");
+            double value = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            Console.Write("Description: ");
+            string description = Console.ReadLine();
+            TransactionType type = TransactionType.Spending;
+            Console.Write("Do you want add Tag label to this spending (y/n)? ");
+            char answer = char.Parse(Console.ReadLine());
+            if(answer == 'y')
+            {
+               Console.Write("Select the Tag Name : ");
+               string tagName = Console.ReadLine();
+               Console.WriteLine("Searching in the tag list .. ");
+               Tag searchedTag = Program.Tags.Find( x => x.Name == tagName);
+               if(searchedTag == null)
+               {
+                   throw new BusinessException("Tag searched not found ! .. please have right that the tag exist ..  :( ");
+               }
+               Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
+               Program.Transactions.Add(spending);
+            }
+            else
+            {
+                Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
+                Program.Transactions.Add(spending);
+            }
+            Console.WriteLine("Spending added sucessfully ! .. :D  ");
+            Console.WriteLine();
+        }
+        public static void PrintAddNewTransfer()
+        {
+            throw new NotImplementedException("This function is not implemented!, please contatc the system developer.");
         }
         public static void PrintTags()
         {
@@ -142,6 +179,14 @@ namespace SimpleWalletConsoleApp
                         Console.ForegroundColor = aux;
                     break;
                 }
+            }
+        }
+        public static void PrintReceives()
+        {
+            Console.WriteLine("Displaying all receives: ");
+            foreach(Transaction p in Program.Transactions.Where( x => x.Type == TransactionType.Receive))
+            {
+                Console.WriteLine(p);
             }
         }
         public static void PrintSystemUsers()

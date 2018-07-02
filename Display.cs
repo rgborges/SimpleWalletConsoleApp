@@ -181,12 +181,52 @@ namespace SimpleWalletConsoleApp
                 }
             }
         }
+        public static void PrintTransaction(Transaction transaction)
+        {
+             ConsoleColor auxForeGroundColor = Console.ForegroundColor;
+                switch(transaction.Type)
+                {
+                    case TransactionType.Receive:     
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine(transaction);
+                        
+                    break;
+                    case TransactionType.Spending:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(transaction);
+                    break;
+                    case TransactionType.Transfering:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine(transaction);
+                    break;
+                }
+               Console.ForegroundColor = auxForeGroundColor;
+        }
+        public static void PrintTransactions()
+        {
+            BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
+            Console.WriteLine("Displaying all transactions: ");
+            foreach(Transaction p in Program.Transactions.Where( x => x.Origin == Program.Wallets[Program.CurrentWalletIndex]))
+            {
+               PrintTransaction(p);
+            }
+        }
+        public static void PrintSpending()
+        {
+            BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
+            Console.WriteLine("Displaying all spendings: ");
+            foreach(Transaction p in Program.Transactions.Where( x => x.Type == TransactionType.Spending && x.Origin == Program.Wallets[Program.CurrentWalletIndex]))
+            {
+               PrintTransaction(p);
+            }
+        }
         public static void PrintReceives()
         {
+            BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
             Console.WriteLine("Displaying all receives: ");
-            foreach(Transaction p in Program.Transactions.Where( x => x.Type == TransactionType.Receive))
+            foreach(Transaction p in Program.Transactions.Where( x => x.Type == TransactionType.Receive && x.Origin == Program.Wallets[Program.CurrentWalletIndex]))
             {
-                Console.WriteLine(p);
+               PrintTransaction(p);
             }
         }
         public static void PrintSystemUsers()
@@ -231,6 +271,20 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine();
             Console.WriteLine("Command typed is invalid.. please try typing --help to view the commands accepted.");
             Console.WriteLine();
+        }
+        public static void PrintTypeAnyKeyToConitinue()
+        {
+            Console.WriteLine();
+            Console.Write("Please type any key to continue.");
+            Console.ReadLine();
+        }
+        public static void PrintHelp()
+        {
+            Console.WriteLine("You can type the following commands: ");
+            Console.WriteLine("--select-walet               | Selects a wallet insrance in this model");
+            Console.WriteLine("--add-receive                | Adds a receive to the wallet instance in the program");
+            Console.WriteLine("--add-spending               | Adds a spending to the wallet instance in the program");
+            Console.WriteLine("--display-transactions       | Displays all transactions registered in the wallet instance selected");
         }
    
     }

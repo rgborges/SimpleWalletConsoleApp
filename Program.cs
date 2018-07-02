@@ -54,16 +54,25 @@ namespace SimpleWalletConsoleApp
                             case "--add-receive":
                             //TODO Adds an object to the model
                                 Display.PrintAddNewReceive();
-                                Console.ReadLine();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--add-spending":
+                            //TODO: Adds a spending to the model
+                                Display.PrintAddNewSpending();
+                                Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--display-receives":
                             //TODO: Display the last receives in this month
                                 Display.PrintReceives();
-                                Console.ReadLine();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--display-transactions":
+                                Display.PrintTransactions();
+                                Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--help":
-                                Console.WriteLine("You've typed help!");
-                                Console.ReadLine();
+                                Display.PrintHelp();
+                                Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--quit": 
                                 Display.PrintMenuQuitMessage();
@@ -71,7 +80,7 @@ namespace SimpleWalletConsoleApp
                             break;
                             default:
                                 Console.WriteLine("Option invalid!");
-                                Console.ReadLine();
+                                Display.PrintTypeAnyKeyToConitinue();
                             break;
                         }
                     }

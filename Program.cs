@@ -31,25 +31,10 @@ namespace SimpleWalletConsoleApp
                     {
                         switch(key)
                         {
-                            case "--select-wallet":
-                                if(options.Length == 1 )
-                                {
-                                    //validates the --select-wallet only command
-                                    Display.PrintSelectWallet();
-                                    Console.ReadLine();
-                                }
-                                else
-                                {
-                                    switch(options[2])
-                                    {
-                                        case "-w":
-                                        break;
-                                        default:
-                                            Display.PrintNonCommandValid();
-                                            Console.ReadLine();
-                                        break;
-                                    }
-                                }
+                            case "--select-wallet": 
+                            //TODO: Selects a Wallet Instance
+                                Display.PrintSelectWallet();
+                                Console.ReadLine();
                             break;
                             case "--add-receive":
                             //TODO Adds an object to the model
@@ -62,11 +47,12 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--display-receives":
-                            //TODO: Display the last receives in this month
+                            //TODO: Display the last receives
                                 Display.PrintReceives();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--display-transactions":
+                            //TODO: Displays the Last Transactions
                                 Display.PrintTransactions();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;

@@ -98,11 +98,13 @@ namespace SimpleWalletConsoleApp
                }
                Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
                Program.Transactions.Add(receive);
+               Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
             }
             else
             {
                 Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
                 Program.Transactions.Add(receive);
+                Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
             }
             Console.WriteLine("Receive added sucessfully ! .. :D  ");
             Console.WriteLine();
@@ -131,11 +133,13 @@ namespace SimpleWalletConsoleApp
                }
                Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
                Program.Transactions.Add(spending);
+               Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
             }
             else
             {
                 Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
                 Program.Transactions.Add(spending);
+                Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
             }
             Console.WriteLine("Spending added sucessfully ! .. :D  ");
             Console.WriteLine();
@@ -143,6 +147,18 @@ namespace SimpleWalletConsoleApp
         public static void PrintAddNewTransfer()
         {
             throw new NotImplementedException("This function is not implemented!, please contatc the system developer.");
+        }
+        public static void PrintAddNewWallet()
+        {
+            Console.WriteLine("You've selected to add a new wallet to this model ... please inform some informations: ");
+            BusinessRules.ChecksIfAnUserIsSelected();
+            Console.WriteLine($"Do you want add a new wallet to the user {Program.Users[Program.CurrentUserIndex]}");
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+            Wallet wallet = new Wallet(name, Program.Users[Program.CurrentUserIndex]);
+            Program.Wallets.Add(wallet);
+            Console.WriteLine();
+            Console.WriteLine($"Wallet {wallet} added sucessfully to this model :D !  ");
         }
         public static void PrintTags()
         {
@@ -238,6 +254,8 @@ namespace SimpleWalletConsoleApp
         }
         public static void PrintWallets()
         {
+            Console.WriteLine("Wallets:  ");
+            Console.WriteLine();
             foreach (Wallet p in Program.Wallets)
             {
                 Console.WriteLine(p);
@@ -265,6 +283,7 @@ namespace SimpleWalletConsoleApp
         {
             Console.WriteLine("Exiting the program ...");
             Console.WriteLine("Bye Bye ;D ... Se ya!");
+            Console.WriteLine();
         }
         public static void PrintNonCommandValid()
         {
@@ -285,6 +304,8 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine("--add-receive                | Adds a receive to the wallet instance in the program");
             Console.WriteLine("--add-spending               | Adds a spending to the wallet instance in the program");
             Console.WriteLine("--display-transactions       | Displays all transactions registered in the wallet instance selected");
+            Console.WriteLine("--display-wallets            | Displays all wallets");
+            Console.WriteLine("--display-tags               | Displays all tags registered in the system");
         }
    
     }

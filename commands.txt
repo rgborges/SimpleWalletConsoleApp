@@ -8,4 +8,16 @@ Sellect a Wallet instance into the program:
 
 Adds a receive:
 
-    SimpleWallet>--add receive
+    SimpleWallet>--add-receive
+
+Add a spending:
+
+    SimpleWallet>--add-spending
+
+Add a wallet to the system
+
+    SimpleWallet>--add-wallet
+
+Show info
+
+    SimpleWallet>--show-info

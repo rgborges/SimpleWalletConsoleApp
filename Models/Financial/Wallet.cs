@@ -16,28 +16,30 @@ namespace SimpleWalletConsoleApp.Models.Financial
             this.Name = name;
             this.Owner = owner;
             this.Id = Guid.NewGuid();
+            this.Ballance = 0.0;
         }
         public Wallet(string name, SystemUser owner, List<Transaction> transactions)
         {
             this.Name = name;
             this.Owner = owner;
             this.Id = Guid.NewGuid();
+            this.Ballance = 0.0;
             ImportTransactions(transactions);
         }
         public void Debit(Transaction transaction)
         {
-            if (transaction == null)
+            if ( transaction == null)
             {
-                throw new NullReferenceException("Error: transactions list object passed in Debit method in Wallet.Debit is null");
+                throw new NullReferenceException("transactions object passed in Debit method in Wallet.Debit is null");
             }
             Ballance -= transaction.Value;
             Transactions.Add(transaction);
         }
         public void Deposit(Transaction transaction)
         {
-            if(transaction != null)
+            if(transaction == null)
             {
-                throw new NullReferenceException("Error: transactions list object passed in Deposit method in Wallet.Deposit is null");
+                throw new NullReferenceException("transaction object passed in Deposit method in Wallet.Deposit is null");
             }
             Ballance += transaction.Value;
             Transactions.Add(transaction);
@@ -50,7 +52,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
             }
             else
             {
-                throw new NullReferenceException("Error: Transactions list reiceived in the Method: ImportTransactions is null");
+                throw new NullReferenceException("Transactions list reiceived in the Method: ImportTransactions is null");
             }
         }
         public override string ToString()

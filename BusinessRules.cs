@@ -14,8 +14,15 @@ namespace SimpleWalletConsoleApp
         {
            if(Program.Wallets[Program.CurrentWalletIndex] == null)
            {
-               throw new BusinessException("Business Rules: I doesn't exist a wallet in the actual instance .. please create/select or just select a wallet");
+               throw new BusinessException("It doesn't exist a wallet in the actual instance .. please create/select or just select a wallet");
            }
+        }
+        public static void ChecksIfAnUserIsSelected()
+        {
+            if(Program.Users[Program.CurrentUserIndex] == null)
+            {
+                throw new BusinessException("No User instance is selected.");
+            }
         }
     }
 }

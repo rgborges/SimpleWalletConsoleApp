@@ -46,6 +46,21 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintAddNewSpending();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--add-wallet":
+                            //TODO: Adds a wallet
+                                Display.PrintAddNewWallet();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--display-wallets":
+                            //TODO: Display last wallets
+                                Display.PrintWallets();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--display-tags":
+                            //TODO: Display last tags
+                                Display.PrintTags();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--display-receives":
                             //TODO: Display the last receives
                                 Display.PrintReceives();
@@ -65,7 +80,8 @@ namespace SimpleWalletConsoleApp
                                 looping = false;        
                             break;
                             default:
-                                Console.WriteLine("Option invalid!");
+                                Console.WriteLine("Option invalid! Please check help section");
+                                Display.PrintHelp();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                         }
@@ -74,6 +90,7 @@ namespace SimpleWalletConsoleApp
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
+                    Console.ReadLine();
                 }            
             }
 

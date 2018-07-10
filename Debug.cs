@@ -13,7 +13,9 @@ namespace SimpleWalletConsoleApp
     {
         public static void AddDebugSamples()
         {
-            Program.Users.Add(new SystemUser("Rafael Borges", "simplewaladmin", "teste123"));
+            Program.Users.Add(new SystemUser("Athan", "simplewaladmin", "teste123"));
+            Program.Users[0].Salary = 1200.00;
+            Program.Users[0].Occupation = "Software Developer";
             Program.Users.Add(new SystemUser("Athan Gray", "agray55", "teste123"));
             Program.Wallets.Add(new Wallet("CITI Bank", Program.Users[0]));
             Program.Wallets.Add(new Wallet("Itau Bank", Program.Users[0]));

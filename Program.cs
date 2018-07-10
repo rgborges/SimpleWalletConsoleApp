@@ -51,6 +51,11 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintAddNewWallet();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--add-transfer":
+                            //TODO: Adds a transfer between the current wallet instance to another wallet registred in the model
+                                Display.PrintAddNewTransfer();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--display-wallets":
                             //TODO: Display last wallets
                                 Display.PrintWallets();
@@ -69,6 +74,11 @@ namespace SimpleWalletConsoleApp
                             case "--display-transactions":
                             //TODO: Displays the Last Transactions
                                 Display.PrintTransactions();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--display-info":
+                            //TODO: Display user info
+                                Display.PrintUserInfo();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--help":

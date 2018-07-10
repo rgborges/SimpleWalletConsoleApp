@@ -20,4 +20,5 @@ Add a wallet to the system
 
 Show info
 
-    SimpleWallet>--show-info
+    SimpleWallet>--display-info
+

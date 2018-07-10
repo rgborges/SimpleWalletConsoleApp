@@ -146,7 +146,39 @@ namespace SimpleWalletConsoleApp
         }
         public static void PrintAddNewTransfer()
         {
-            throw new NotImplementedException("This function is not implemented!, please contatc the system developer.");
+            BusinessRules.ChecksIfWalletIsSelected();
+            Console.WriteLine($"You've selecteed the transfer option to this wallet {Program.Wallets[Program.CurrentWalletIndex]}");
+            Console.WriteLine();
+            Console.WriteLine("Please select wich wallet do you wish to tranfer a value: ");
+            PrintWallets();
+            Console.WriteLine();
+            Console.Write("Type the destination wallet guid: ");
+            Guid guid = Guid.Parse(Console.ReadLine());
+            int searchedWalletIndex = Program.Wallets.FindIndex( x => x.Id == guid);
+            if( searchedWalletIndex == -1)
+            {
+                throw new BusinessException("This wallet doesn't exist : ( ");
+            }
+            Console.Write("Type the ammount: ");
+            double value = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            Console.Write("Description: ");
+            string description = Console.ReadLine();
+            Console.WriteLine();
+            Console.Write($"Do you want to transfer {value} to the wallet: {Program.Wallets[searchedWalletIndex]} (y/n)");
+            char answer = char.Parse(Console.ReadLine());
+            if( answer == 'y')
+            {
+                Transaction transfer = new Transaction(value, description, TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex]);
+                Program.Wallets[Program.CurrentWalletIndex].Debit(transfer);
+                Program.Wallets[searchedWalletIndex].Deposit(transfer);
+                Program.Transactions.Add(transfer);
+                Console.WriteLine("Transfer added sucessfuly. :D");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Operation cancelled !");
+            }
         }
         public static void PrintAddNewWallet()
         {
@@ -281,8 +313,21 @@ namespace SimpleWalletConsoleApp
         }
         public static void PrintMenuQuitMessage()
         {
+            Console.WriteLine();
             Console.WriteLine("Exiting the program ...");
             Console.WriteLine("Bye Bye ;D ... Se ya!");
+            Console.WriteLine();
+        }
+        public static void PrintUserInfo()
+        {
+            BusinessRules.ChecksIfAnUserIsSelected();
+            Console.WriteLine($"Showing information abou the user {Program.Users[Program.CurrentUserIndex]} ");
+            Console.WriteLine();
+            Console.WriteLine($"User Full Name: {Program.Users[Program.CurrentUserIndex].FullName}");
+            Console.WriteLine($"Occupation: {Program.Users[Program.CurrentUserIndex].Occupation}");
+            Console.WriteLine($"Salary: {Program.Users[Program.CurrentUserIndex].Salary}");
+            Console.WriteLine($"Annual Salary: {Program.Users[Program.CurrentUserIndex].GetAnnualSalary()}");
+            Console.WriteLine($"Number of Wallets: {Program.Wallets.Count}");
             Console.WriteLine();
         }
         public static void PrintNonCommandValid()

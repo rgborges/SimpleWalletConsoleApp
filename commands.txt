@@ -22,3 +22,7 @@ Show info
 
     SimpleWallet>--display-info
 
+Add task
+
+    SimpleWallet>--add-task
+

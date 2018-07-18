@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using SimpleWalletConsoleApp.Models;
 using SimpleWalletConsoleApp.Exceptions;
 using SimpleWalletConsoleApp.Models.Financial;
+using SimpleWalletConsoleApp.Models.Function;
 
 
 namespace SimpleWalletConsoleApp
@@ -192,6 +193,68 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine();
             Console.WriteLine($"Wallet {wallet} added sucessfully to this model :D !  ");
         }
+        public static void PrintAddNewTask()
+        {
+            Console.WriteLine("You've selected to add a task to your model.");
+            Console.WriteLine("Tasks can be a activity like a trip or shopping..");
+            Console.WriteLine();
+            Console.Write("Please define the task name: ");
+            string name = Console.ReadLine(); 
+            TagColor color = PrintSelectTagColor();
+            Task task = new Task(name, color);
+            Program.Tasks.Add(task);
+            Program.Tags.Add(task.Tag);
+            Console.WriteLine();
+            Console.WriteLine($"The task: {task}, was added sucessfully to this model!");
+        }
+        public static TagColor PrintSelectTagColor()
+        {
+            TagColor colorResult;
+            Console.WriteLine("Please select the tag color: ");
+            Console.WriteLine("1 - Blue");
+            Console.WriteLine("2 - Red");
+            Console.WriteLine("3 - Yellow");
+            Console.WriteLine("4 - Green");
+            Console.WriteLine();
+            Console.Write("Please choose a option: ");
+            int option = int.Parse(Console.ReadLine());
+            switch(option)
+            {
+                case 1 :
+                    colorResult = TagColor.Blue;
+                break;
+                case 2 :
+                    colorResult = TagColor.Red;
+                break;
+                case 3:
+                    colorResult = TagColor.Yellow;
+                break;
+                case 4:
+                    colorResult = TagColor.Green;
+                break;
+                default:
+                    colorResult = TagColor.Blue;
+                break;
+            }
+            Console.WriteLine($"You've chossen the option {option}");
+            return colorResult;
+        }
+        public static void PrintSelectTask()
+        {
+            Console.WriteLine("Choose a task to this model instance: ");
+            PrintTasks();
+            Console.WriteLine();
+            Console.Write("Select the Guid: ");
+            Guid searchedTaskId = Guid.Parse(Console.ReadLine());
+            int resultIndex = Program.Tasks.FindIndex(x => x.Id == searchedTaskId);
+            if(resultIndex == -1)
+            {
+                throw new SimpleWalletException("Was not possible to find this task :( ");
+            }
+            Program.CurrentTaskId = resultIndex;
+            Console.WriteLine($"You've selected the task {Program.Tasks[Program.CurrentTaskId]}");
+            ProgramMechanics.UpdateHeaderWithTask(Program.Tasks[Program.CurrentTaskId]);
+        }
         public static void PrintTags()
         {
              var aux = Console.ForegroundColor;
@@ -307,6 +370,15 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine(Program.Wallets[searchedIdWallet]);
             Console.WriteLine("Transactions in this wallet: ");
             foreach (Transaction p in Program.Transactions.Where( x => x.Origin == Program.Wallets[searchedIdWallet]))
+            {
+                Console.WriteLine(p);
+            }
+        }
+        public static void PrintTasks()
+        {
+            Console.WriteLine("Printing tasks registered: ");
+            Console.WriteLine();
+            foreach(Task p in Program.Tasks)
             {
                 Console.WriteLine(p);
             }

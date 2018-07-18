@@ -12,16 +12,23 @@ namespace SimpleWalletConsoleApp
     {
         public static void ChecksIfWalletIsSelected()
         {
-           if(Program.Wallets[Program.CurrentWalletIndex] == null)
+           if(Program.CurrentWalletIndex == -1)
            {
                throw new BusinessException("It doesn't exist a wallet in the actual instance .. please create/select or just select a wallet");
            }
         }
         public static void ChecksIfAnUserIsSelected()
         {
-            if(Program.Users[Program.CurrentUserIndex] == null)
+            if(Program.CurrentUserIndex == -1)
             {
                 throw new BusinessException("No User instance is selected.");
+            }
+        }
+        public static void ChecksIfATaskIsSelected()
+        {
+            if(Program.CurrentTaskId == -1)
+            {
+                throw new BusinessException("No task is selected in this model instance");
             }
         }
     }

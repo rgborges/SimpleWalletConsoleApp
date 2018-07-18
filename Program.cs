@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SimpleWalletConsoleApp.Models;
 using SimpleWalletConsoleApp.Models.Financial;
+using SimpleWalletConsoleApp.Models.Function;
 
 
 namespace SimpleWalletConsoleApp
@@ -12,7 +13,8 @@ namespace SimpleWalletConsoleApp
         public static List<SystemUser> Users = new List<SystemUser>();
         public static List<Wallet> Wallets = new List<Wallet>();
         public static List<Transaction> Transactions = new List<Transaction>();
-        public static int CurrentWalletIndex, CurrentUserIndex;
+        public static List<Task> Tasks = new List<Task>();
+        public static int CurrentWalletIndex = -1, CurrentUserIndex = -1, CurrentTaskId = -1;
         public static string Header = "SimpleWallet";
         static void Main(string[] args)
         {
@@ -36,6 +38,11 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintSelectWallet();
                                 Console.ReadLine();
                             break;
+                            case "--select-tasks":
+                            //TODO: Selects a task
+                                Display.PrintSelectTask();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--add-receive":
                             //TODO Adds an object to the model
                                 Display.PrintAddNewReceive();
@@ -56,6 +63,11 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintAddNewTransfer();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--add-task":
+                            //TODO: Adds a task to this model
+                                Display.PrintAddNewTask();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--display-wallets":
                             //TODO: Display last wallets
                                 Display.PrintWallets();
@@ -74,6 +86,11 @@ namespace SimpleWalletConsoleApp
                             case "--display-transactions":
                             //TODO: Displays the Last Transactions
                                 Display.PrintTransactions();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--display-tasks":
+                            //TODO: Displays tasks in the model
+                                Display.PrintTasks();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--display-info":

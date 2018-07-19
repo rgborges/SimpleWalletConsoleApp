@@ -15,7 +15,7 @@ namespace SimpleWalletConsoleApp
         public static List<Transaction> Transactions = new List<Transaction>();
         public static List<Task> Tasks = new List<Task>();
         public static int CurrentWalletIndex = -1, CurrentUserIndex = -1, CurrentTaskId = -1;
-        public static string Header = "SimpleWallet";
+        public static string Header = Settings.ApplicationName;
         static void Main(string[] args)
         {
             //Add debug sample
@@ -38,7 +38,7 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintSelectWallet();
                                 Console.ReadLine();
                             break;
-                            case "--select-tasks":
+                            case "--select-task":
                             //TODO: Selects a task
                                 Display.PrintSelectTask();
                                 Display.PrintTypeAnyKeyToConitinue();
@@ -96,6 +96,11 @@ namespace SimpleWalletConsoleApp
                             case "--display-info":
                             //TODO: Display user info
                                 Display.PrintUserInfo();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--exit":
+                            //TODO: Reset wallet, tasks in the instance
+                                ProgramMechanics.ResetAccount();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--help":

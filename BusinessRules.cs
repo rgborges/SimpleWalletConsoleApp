@@ -31,5 +31,27 @@ namespace SimpleWalletConsoleApp
                 throw new BusinessException("No task is selected in this model instance");
             }
         }
+        public static bool IsWalletSelected()
+        {
+            if(Program.CurrentWalletIndex >= 0)
+           {
+               return true;
+           }
+           else
+           {
+               return false;
+           }
+        }
+        public static bool IsTaskSelected()
+        {
+            if(Program.CurrentTaskId >= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

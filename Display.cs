@@ -15,7 +15,7 @@ namespace SimpleWalletConsoleApp
         public static void PrintHeader(string header)
         {
             Console.Clear();
-            Console.WriteLine("Borges Sofwtare Labs - v 0.0.1 - SimpleWallet Console App 2018");
+            Console.WriteLine($"Borges Sofwtare Labs - v {Settings.AplicationVersion} - SimpleWallet Console App 2018");
             Console.WriteLine();
             Console.Write($"{header}>");
         }
@@ -36,7 +36,7 @@ namespace SimpleWalletConsoleApp
         public static void PrintTagManagementMenu()
         {
             Console.Clear();
-            Console.WriteLine("Borges Sofwtare Labs - v 0.0.1 - SimpleWallet Console App 2018");
+            Console.WriteLine("Borges Sofwtare Labs - v 0.0.6 - SimpleWallet Console App 2018");
             Console.WriteLine();
             Console.WriteLine("Please type an option: ");
             Console.WriteLine(" 1. List Tags"); 
@@ -85,28 +85,40 @@ namespace SimpleWalletConsoleApp
             Console.Write("Description: ");
             string description = Console.ReadLine();
             TransactionType type = TransactionType.Receive;
-            Console.Write("Do you want add Tag label to this receive (y/n)? ");
-            char answer = char.Parse(Console.ReadLine());
-            if(answer == 'y')
+            if(BusinessRules.IsTaskSelected())
             {
-               Console.Write("Select the Tag Name : ");
-               string tagName = Console.ReadLine();
-               Console.WriteLine("Searching in the tag list .. ");
-               Tag searchedTag = Program.Tags.Find( x => x.Name == tagName);
-               if(searchedTag == null)
-               {
-                   throw new BusinessException("Tag searched not found ! .. please have right that the tag exist ..  :( ");
-               }
-               Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
-               Program.Transactions.Add(receive);
-               Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
+                Console.WriteLine("We've note that you hava a task selected, so the receive will be referenced to this task!.");
+                Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], Program.Tasks[Program.CurrentTaskId].Tag);
+                Program.Transactions.Add(receive);
+                Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
+                Program.Tasks[Program.CurrentTaskId].Transactions.Add(receive);
             }
             else
             {
-                Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
-                Program.Transactions.Add(receive);
-                Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
+                Console.Write("Do you want add Tag label to this receive (y/n)? ");
+                char answer = char.Parse(Console.ReadLine());
+                if(answer == 'y')
+                {
+                    Console.Write("Select the Tag Name : ");
+                    string tagName = Console.ReadLine();
+                    Console.WriteLine("Searching in the tag list .. ");
+                    Tag searchedTag = Program.Tags.Find( x => x.Name == tagName);
+                    if(searchedTag == null)
+                    {
+                        throw new BusinessException("Tag searched not found ! .. please have right that the tag exist ..  :( ");
+                    }
+                    Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
+                    Program.Transactions.Add(receive);
+                    Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
+                }
+                else
+                {
+                    Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
+                    Program.Transactions.Add(receive);
+                    Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
+                }
             }
+          
             Console.WriteLine("Receive added sucessfully ! .. :D  ");
             Console.WriteLine();
         }
@@ -120,28 +132,40 @@ namespace SimpleWalletConsoleApp
             Console.Write("Description: ");
             string description = Console.ReadLine();
             TransactionType type = TransactionType.Spending;
-            Console.Write("Do you want add Tag label to this spending (y/n)? ");
-            char answer = char.Parse(Console.ReadLine());
-            if(answer == 'y')
+            if(BusinessRules.IsTaskSelected())
             {
-               Console.Write("Select the Tag Name : ");
-               string tagName = Console.ReadLine();
-               Console.WriteLine("Searching in the tag list .. ");
-               Tag searchedTag = Program.Tags.Find( x => x.Name == tagName);
-               if(searchedTag == null)
-               {
-                   throw new BusinessException("Tag searched not found ! .. please have right that the tag exist ..  :( ");
-               }
-               Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
-               Program.Transactions.Add(spending);
-               Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
+                Console.WriteLine("We've note that you hava a task selected, so this spending will be referenced to this task!.");
+                Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], Program.Tasks[Program.CurrentTaskId].Tag);
+                Program.Transactions.Add(spending);
+                Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
+                Program.Tasks[Program.CurrentTaskId].Transactions.Add(spending);
             }
             else
             {
-                Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
-                Program.Transactions.Add(spending);
-                Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
+                Console.Write("Do you want add Tag label to this spending (y/n)? ");
+                char answer = char.Parse(Console.ReadLine());
+                if(answer == 'y')
+                {
+                    Console.Write("Select the Tag Name : ");
+                    string tagName = Console.ReadLine();
+                    Console.WriteLine("Searching in the tag list .. ");
+                    Tag searchedTag = Program.Tags.Find( x => x.Name == tagName);
+                    if(searchedTag == null)
+                    {
+                        throw new BusinessException("Tag searched not found ! .. please have right that the tag exist ..  :( ");
+                    }
+                    Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
+                    Program.Transactions.Add(spending);
+                    Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
+                }
+                else
+                {
+                    Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
+                    Program.Transactions.Add(spending);
+                    Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
+                }
             }
+            
             Console.WriteLine("Spending added sucessfully ! .. :D  ");
             Console.WriteLine();
         }
@@ -169,10 +193,45 @@ namespace SimpleWalletConsoleApp
             char answer = char.Parse(Console.ReadLine());
             if( answer == 'y')
             {
-                Transaction transfer = new Transaction(value, description, TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex]);
-                Program.Wallets[Program.CurrentWalletIndex].Debit(transfer);
-                Program.Wallets[searchedWalletIndex].Deposit(transfer);
-                Program.Transactions.Add(transfer);
+                if(BusinessRules.IsTaskSelected())
+                {
+                    Console.WriteLine("We've note that you hava a task selected, so this transfer will be referenced to this task!.");
+                    Transaction transfer = new Transaction(value, description, TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex], Program.Tasks[Program.CurrentTaskId].Tag);
+                    Program.Wallets[Program.CurrentWalletIndex].Debit(transfer);
+                    Program.Wallets[searchedWalletIndex].Deposit(transfer);
+                    Program.Transactions.Add(transfer);
+                    Program.Tasks[Program.CurrentTaskId].Transactions.Add(transfer);
+                }
+                else
+                {
+                    Console.Write("Do you want add Tag label to this transfer (y/n)? ");
+                    char answer2 = char.Parse(Console.ReadLine());
+                    if(answer2 == 'y')
+                    {
+                        //TODO:Add a tag
+                        Console.Write("Select the Tag Name : ");
+                        string tagName = Console.ReadLine();
+                        Console.WriteLine("Searching in the tag list .. ");
+                        Tag searchedTag = Program.Tags.Find( x => x.Name == tagName);
+                        if(searchedTag == null)
+                        {
+                            throw new BusinessException("Tag searched not found ! .. please have right that the tag exist ..  :( ");
+                        }
+                        Transaction transfer = new Transaction(value, description, TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex], searchedTag);
+                        Program.Wallets[Program.CurrentWalletIndex].Debit(transfer);
+                        Program.Wallets[searchedWalletIndex].Deposit(transfer);
+                        Program.Transactions.Add(transfer);
+                    }
+                    else
+                    {
+                        //TODO:Continue with no tag
+                        Transaction transfer = new Transaction(value, description, TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex]);
+                        Program.Wallets[Program.CurrentWalletIndex].Debit(transfer);
+                        Program.Wallets[searchedWalletIndex].Deposit(transfer);
+                        Program.Transactions.Add(transfer);
+                    }
+
+                }
                 Console.WriteLine("Transfer added sucessfuly. :D");
                 Console.WriteLine();
             }
@@ -374,6 +433,14 @@ namespace SimpleWalletConsoleApp
                 Console.WriteLine(p);
             }
         }
+        public static void PrintWalletTransactionsWithTags()
+        {
+            BusinessRules.ChecksIfWalletIsSelected();
+            foreach(Transaction p in Program.Transactions.Where( x => x.Origin == Program.Wallets[Program.CurrentWalletIndex] && x.Tag != null))
+            {
+                Console.WriteLine($"Value: {p.Value}, Description {p.Description}, Date: {p.Date}, Tag: {p.Tag}");
+            }
+        }
         public static void PrintTasks()
         {
             Console.WriteLine("Printing tasks registered: ");
@@ -420,9 +487,11 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine("--select-walet               | Selects a wallet insrance in this model");
             Console.WriteLine("--add-receive                | Adds a receive to the wallet instance in the program");
             Console.WriteLine("--add-spending               | Adds a spending to the wallet instance in the program");
+            Console.WriteLine("--add-task                   | Adds a task to the model");
             Console.WriteLine("--display-transactions       | Displays all transactions registered in the wallet instance selected");
             Console.WriteLine("--display-wallets            | Displays all wallets");
             Console.WriteLine("--display-tags               | Displays all tags registered in the system");
+            Console.WriteLine("--display-tasks              | Displays all tasks for the wallet in the instance.");
         }
    
     }

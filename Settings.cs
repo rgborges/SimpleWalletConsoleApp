@@ -10,5 +10,6 @@ namespace SimpleWalletConsoleApp
     public static class Settings
     {
         public static string ApplicationName = "SimpleWallet";
+        public static string AplicationVersion = "0.0.6";
     }
 }

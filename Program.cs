@@ -88,6 +88,10 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintTransactions();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--dt-tag":
+                                Display.PrintWalletTransactionsWithTags();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--display-tasks":
                             //TODO: Displays tasks in the model
                                 Display.PrintTasks();

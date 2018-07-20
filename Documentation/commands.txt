@@ -25,4 +25,5 @@ Show info
 Add task
 
     SimpleWallet>--add-task
+    SimpleWallet[taskname]>
 

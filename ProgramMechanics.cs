@@ -23,6 +23,29 @@ namespace SimpleWalletConsoleApp
         {
             Program.Header = Settings.ApplicationName +  $"[{task.Name}]";
         }
+        public static ConsoleColor GetTagColor(Tag tag)
+        {
+            ConsoleColor color;
+            switch(tag.Color)
+            {
+                case TagColor.Blue:
+                    color = ConsoleColor.Blue;
+                break;
+                case TagColor.Green:
+                    color = ConsoleColor.Green;
+                break;
+                case TagColor.Red:
+                    color = ConsoleColor.Red;
+                break;
+                case TagColor.Yellow:
+                    color = ConsoleColor.Yellow;
+                break;
+                default:
+                    color = ConsoleColor.White;
+                break;
+            }
+            return color;
+        }
     }
 
 }

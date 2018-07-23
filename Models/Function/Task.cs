@@ -46,7 +46,7 @@ namespace SimpleWalletConsoleApp.Models.Function
         }
         public override string ToString()
         {
-            return $"Name: {Name}, Tag {Tag} Total Cost: R$ {GetTotalCost().ToString(CultureInfo.InvariantCulture)},  Guid: {Id}, Register Date {RegisterDate}";
+            return $"Name: {Name}, Tag {Tag.Name} Total Cost: R$ {GetTotalCost().ToString(CultureInfo.InvariantCulture)},  Guid: {Id}, Register Date {RegisterDate}";
         }
     }
 }

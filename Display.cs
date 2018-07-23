@@ -36,7 +36,7 @@ namespace SimpleWalletConsoleApp
         public static void PrintTagManagementMenu()
         {
             Console.Clear();
-            Console.WriteLine("Borges Sofwtare Labs - v 0.0.6 - SimpleWallet Console App 2018");
+            Console.WriteLine($"Borges Sofwtare Labs - v {Settings.AplicationVersion} - SimpleWallet Console App 2018");
             Console.WriteLine();
             Console.WriteLine("Please type an option: ");
             Console.WriteLine(" 1. List Tags"); 
@@ -146,6 +146,8 @@ namespace SimpleWalletConsoleApp
                 char answer = char.Parse(Console.ReadLine());
                 if(answer == 'y')
                 {
+                    Display.PrintTags();
+                    Console.WriteLine();
                     Console.Write("Select the Tag Name : ");
                     string tagName = Console.ReadLine();
                     Console.WriteLine("Searching in the tag list .. ");
@@ -438,7 +440,10 @@ namespace SimpleWalletConsoleApp
             BusinessRules.ChecksIfWalletIsSelected();
             foreach(Transaction p in Program.Transactions.Where( x => x.Origin == Program.Wallets[Program.CurrentWalletIndex] && x.Tag != null))
             {
+                var aux = Console.ForegroundColor;
+                Console.ForegroundColor = ProgramMechanics.GetTagColor(p.Tag);
                 Console.WriteLine($"Value: {p.Value}, Description {p.Description}, Date: {p.Date}, Tag: {p.Tag}");
+                Console.ForegroundColor = aux;
             }
         }
         public static void PrintTasks()
@@ -485,10 +490,13 @@ namespace SimpleWalletConsoleApp
         {
             Console.WriteLine("You can type the following commands: ");
             Console.WriteLine("--select-walet               | Selects a wallet insrance in this model");
+            Console.WriteLine("--select-task                | Selects a task to this model");
             Console.WriteLine("--add-receive                | Adds a receive to the wallet instance in the program");
             Console.WriteLine("--add-spending               | Adds a spending to the wallet instance in the program");
+            Console.WriteLine("--add-transfer               | Adds a transfer to the wallet instance in the program");
             Console.WriteLine("--add-task                   | Adds a task to the model");
             Console.WriteLine("--display-transactions       | Displays all transactions registered in the wallet instance selected");
+            Console.WriteLine("--dt-tag                     | Displays all tags transactions registered in the wallet instance selected with tag information");
             Console.WriteLine("--display-wallets            | Displays all wallets");
             Console.WriteLine("--display-tags               | Displays all tags registered in the system");
             Console.WriteLine("--display-tasks              | Displays all tasks for the wallet in the instance.");

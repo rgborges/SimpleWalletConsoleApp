@@ -34,7 +34,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
         }
         public override string ToString()
         {
-            return $"Id: {Id}, Value: {Value.ToString(CultureInfo.InvariantCulture)} R$, Description: {Description}";
+            return $"Value: {Value.ToString(CultureInfo.InvariantCulture)} R$, Description: {Description}, Date: {Date}, Guid: {Id} ";
         }
     }
 }

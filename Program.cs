@@ -20,6 +20,7 @@ namespace SimpleWalletConsoleApp
         {
             //Add debug sample
             Debug.AddDebugSamples();
+            //Looping
             bool looping;
             looping = true;
             while(looping == true)

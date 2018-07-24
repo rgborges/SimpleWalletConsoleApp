@@ -377,8 +377,9 @@ namespace SimpleWalletConsoleApp
         public static void PrintTransactions()
         {
             BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
+            var query = from p in Program.Transactions where p.Origin == Program.Wallets[Program.CurrentWalletIndex] orderby p.Date descending select p;
             Console.WriteLine("Displaying all transactions: ");
-            foreach(Transaction p in Program.Transactions.Where( x => x.Origin == Program.Wallets[Program.CurrentWalletIndex]))
+            foreach(Transaction p in query)
             {
                PrintTransaction(p);
             }
@@ -442,7 +443,7 @@ namespace SimpleWalletConsoleApp
             {
                 var aux = Console.ForegroundColor;
                 Console.ForegroundColor = ProgramMechanics.GetTagColor(p.Tag);
-                Console.WriteLine($"Value: {p.Value}, Description {p.Description}, Date: {p.Date}, Tag: {p.Tag}");
+                Console.WriteLine($"Value: R$ {p.Value}, Description {p.Description}, Date: {p.Date}, Tag: {p.Tag.Name}");
                 Console.ForegroundColor = aux;
             }
         }

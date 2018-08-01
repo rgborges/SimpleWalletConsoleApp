@@ -27,6 +27,7 @@ namespace SimpleWalletConsoleApp
             {
                 try
                 {
+                    ProgramMechanics.UpdateHeader();
                     Display.PrintHeader(Header);
                     string command = Console.ReadLine();
                     string[] options = command.Split(' ');
@@ -69,6 +70,16 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintAddNewTask();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--edit-task":
+                            //TODO: Edit task properties
+                                Display.PrintEditTask();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--edit-wallet":
+                            //TODO: Edit wallet
+                                Display.PrintEditWallet();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--display-wallets":
                             //TODO: Display last wallets
                                 Display.PrintWallets();
@@ -91,6 +102,10 @@ namespace SimpleWalletConsoleApp
                             break;
                             case "--dt-tag":
                                 Display.PrintWalletTransactionsWithTags();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--dt-task":
+                                Display.PrintTasksTransactions();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--display-tasks":

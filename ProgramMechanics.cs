@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using SimpleWalletConsoleApp.Models;
 using SimpleWalletConsoleApp.Models.Financial;
@@ -14,6 +15,24 @@ namespace SimpleWalletConsoleApp
             Program.Header = Settings.ApplicationName;
             Program.CurrentWalletIndex = -1;
             Program.CurrentTaskId = -1;
+        }
+        public static void UpdateHeader()
+        {
+            if(BusinessRules.IsWalletSelected())
+            {
+                string walletName = Program.Wallets[Program.CurrentWalletIndex].Name;
+                Program.Header = Settings.ApplicationName + @"\" + $"{walletName}";
+                if(BusinessRules.IsTaskSelected())
+                {
+                    string taskName = Program.Tasks[Program.CurrentTaskId].Name;
+                    double subTotal = Program.Tasks[Program.CurrentTaskId].GetTotalCost();
+                    Program.Header += $"[{taskName}, R$ {subTotal.ToString(CultureInfo.InvariantCulture)}]";
+                }
+            }
+            else
+            {
+                Program.Header = Settings.ApplicationName;
+            }
         }
         public static void UpdateHeader(string componet)
         {
@@ -47,5 +66,4 @@ namespace SimpleWalletConsoleApp
             return color;
         }
     }
-
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Exceptions;
 
 namespace SimpleWalletConsoleApp.Models.Financial
 {
@@ -10,13 +11,16 @@ namespace SimpleWalletConsoleApp.Models.Financial
         public string Name { set; get;}
         public SystemUser Owner { set; get;}
         public double Ballance { protected set; get;}
-        private List<Transaction> Transactions = new List<Transaction>();
+        public DateTime RgeisterDate { protected set; get;}
+        public List<Transaction> Transactions {protected set; get;}
         public Wallet(string name, SystemUser owner)
         {
             this.Name = name;
             this.Owner = owner;
             this.Id = Guid.NewGuid();
             this.Ballance = 0.0;
+            this.RgeisterDate = DateTime.Now;
+            Transactions = new List<Transaction>();
         }
         public Wallet(string name, SystemUser owner, List<Transaction> transactions)
         {
@@ -24,6 +28,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
             this.Owner = owner;
             this.Id = Guid.NewGuid();
             this.Ballance = 0.0;
+            this.RgeisterDate = DateTime.Now;
             ImportTransactions(transactions);
         }
         public void Debit(Transaction transaction)
@@ -32,6 +37,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
             {
                 throw new NullReferenceException("transactions object passed in Debit method in Wallet.Debit is null");
             }
+            transaction.SetAsOutputFlow();
             Ballance -= transaction.Value;
             Transactions.Add(transaction);
         }
@@ -41,6 +47,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
             {
                 throw new NullReferenceException("transaction object passed in Deposit method in Wallet.Deposit is null");
             }
+            transaction.SetAsInputFlow();
             Ballance += transaction.Value;
             Transactions.Add(transaction);
         }
@@ -54,6 +61,25 @@ namespace SimpleWalletConsoleApp.Models.Financial
             {
                 throw new NullReferenceException("Transactions list reiceived in the Method: ImportTransactions is null");
             }
+        }
+        public void EditName(string newName)
+        {
+            if(!String.IsNullOrEmpty(newName))
+            {
+                this.Name = newName;
+            }
+            else
+            {
+                throw new BusinessException("The name inserted is empity or null");
+            }
+        }
+        public void EditBallance(double newBallance)
+        {
+            this.Ballance = newBallance;
+        }
+        public void EditRegisterDate(DateTime newDate)
+        {
+            this.RgeisterDate = newDate;
         }
         public override string ToString()
         {

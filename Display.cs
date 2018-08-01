@@ -17,12 +17,15 @@ namespace SimpleWalletConsoleApp
             Console.Clear();
             Console.WriteLine($"Borges Sofwtare Labs - v {Settings.AplicationVersion} - SimpleWallet Console App 2018");
             Console.WriteLine();
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.Write($"{header}>");
+            Console.ForegroundColor = aux;
         }
         public static void PrintMainMenu()
         {
             Console.Clear();
-            Console.WriteLine("Borges Sofwtare Labs - v 0.0.1 - SimpleWallet Console App 2018");
+            Console.WriteLine("Borges Software Labs - v 0.0.1 - SimpleWallet Console App 2018");
             Console.WriteLine();
             Console.WriteLine("Please type an option: ");
             Console.WriteLine(" 1. List Tags"); 
@@ -36,7 +39,7 @@ namespace SimpleWalletConsoleApp
         public static void PrintTagManagementMenu()
         {
             Console.Clear();
-            Console.WriteLine($"Borges Sofwtare Labs - v {Settings.AplicationVersion} - SimpleWallet Console App 2018");
+            Console.WriteLine($"Borges Software Labs - v {Settings.AplicationVersion} - SimpleWallet Console App 2018");
             Console.WriteLine();
             Console.WriteLine("Please type an option: ");
             Console.WriteLine(" 1. List Tags"); 
@@ -262,7 +265,10 @@ namespace SimpleWalletConsoleApp
             Console.Write("Please define the task name: ");
             string name = Console.ReadLine(); 
             TagColor color = PrintSelectTagColor();
-            Task task = new Task(name, color);
+            Console.WriteLine();
+            Console.Write("Budget: ");
+            double budget = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            Task task = new Task(name, budget, color);
             Program.Tasks.Add(task);
             Program.Tags.Add(task.Tag);
             Console.WriteLine();
@@ -316,6 +322,79 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine($"You've selected the task {Program.Tasks[Program.CurrentTaskId]}");
             ProgramMechanics.UpdateHeaderWithTask(Program.Tasks[Program.CurrentTaskId]);
         }
+        public static void PrintEditTask()
+        {
+            //TODO: Edit task selected in the instance
+            BusinessRules.ChecksIfATaskIsSelected();
+            var task = Program.Tasks[Program.CurrentTaskId];
+            Console.WriteLine("You've seleced to edit this task properties: ");
+            Console.WriteLine();
+            Console.WriteLine(task);
+            Console.WriteLine();
+            Console.WriteLine("Printing the task properties: ");
+            Console.WriteLine();
+            Console.WriteLine("1 - Name ");
+            Console.WriteLine("2 - Register Date ");
+            Console.WriteLine();
+            Console.Write("Select an option to edit: ");
+            int option1 = int.Parse(Console.ReadLine());
+            switch (option1)
+            {
+                case 1:
+                    Console.Write("Type the new name : ");
+                    string newName = Console.ReadLine();
+                    task.EditName(newName);
+                    Console.WriteLine("task updated sucessfully");
+                break;
+                case 2:
+                    Console.WriteLine("Type the new name : ");
+                    DateTime newTime = DateTime.Parse(Console.ReadLine());
+                    task.EditRegisterDate(newTime);
+                    Console.WriteLine("task updated sucessfully");
+                break;
+                default:
+                    Console.WriteLine("Invalid code for task editing! ");
+                break;
+            }
+        }
+        public static void PrintEditWallet()
+        {
+            BusinessRules.ChecksIfWalletIsSelected();
+            Console.WriteLine("You've selected to write the task properties.");
+            Console.WriteLine($"{Program.Wallets[Program.CurrentWalletIndex]} : ");
+            var wallet = Program.Wallets[Program.CurrentWalletIndex];
+            Console.WriteLine();
+            Console.WriteLine("What property do you want to edit? ");
+            Console.WriteLine(" 1 - Name");
+            Console.WriteLine(" 2 - Register Date");
+            Console.WriteLine(" 3 - Ballance");
+            Console.Write("Please type the option: ");
+            int option = int.Parse(Console.ReadLine());
+            switch(option)
+            {
+                case 1:
+                    Console.Write("Write the new name: ");
+                    string newName = Console.ReadLine();
+                    wallet.EditName(newName);
+                    Console.WriteLine("Name edited sucessfully !");
+                break;
+                case 2:
+                    Console.Write("Write the new date: ");
+                    DateTime newDate = DateTime.Parse(Console.ReadLine());
+                    wallet.EditRegisterDate(newDate);
+                    Console.WriteLine("Date edited sucessfully !");
+                break;
+                case 3:
+                    Console.Write("Write the new ballance: ");
+                    double newBallance = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                    wallet.EditBallance(newBallance);
+                    Console.WriteLine("Ballance edited sucessfully !");
+                break;
+                default:
+                    Console.WriteLine("Option for wallet editing is invalid!");
+                break;
+            }
+        }
         public static void PrintTags()
         {
              var aux = Console.ForegroundColor;
@@ -353,6 +432,26 @@ namespace SimpleWalletConsoleApp
                 }
             }
         }
+        private static string PrintCashFlow(CashFlow cashFlow)
+        {
+            string result = null;
+            switch (cashFlow)
+            {
+                case CashFlow.Input:
+                    result = @"+";            
+                break;
+                case CashFlow.Output:
+                    result = @"-";
+                break;
+                case CashFlow.Invalid:
+                    result = @"?";
+                break;
+                default:
+                    result = null;
+                break;
+            }
+            return result;
+        }
         public static void PrintTransaction(Transaction transaction)
         {
              ConsoleColor auxForeGroundColor = Console.ForegroundColor;
@@ -360,8 +459,7 @@ namespace SimpleWalletConsoleApp
                 {
                     case TransactionType.Receive:     
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(transaction);
-                        
+                        Console.WriteLine(transaction);                    
                     break;
                     case TransactionType.Spending:
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -377,12 +475,26 @@ namespace SimpleWalletConsoleApp
         public static void PrintTransactions()
         {
             BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
-            var query = from p in Program.Transactions where p.Origin == Program.Wallets[Program.CurrentWalletIndex] orderby p.Date descending select p;
+            var query = from p in Program.Wallets[Program.CurrentWalletIndex].Transactions orderby p.Date descending select p;
             Console.WriteLine("Displaying all transactions: ");
+            Console.WriteLine();
             foreach(Transaction p in query)
             {
                PrintTransaction(p);
             }
+        }
+        public static void PrintTasksTransactions()
+        {
+            BusinessRules.ChecksIfATaskIsSelected();
+            var query = from p in Program.Tasks[Program.CurrentTaskId].Transactions orderby p.Date descending select p;
+            Console.WriteLine("Diaplay all task transtactions: ");
+            Console.WriteLine();
+            foreach (Transaction p in query)
+            {
+                PrintTransaction(p);
+            }
+            Console.WriteLine();
+            Console.WriteLine($"Subtotal:  {Program.Tasks[Program.CurrentTaskId].GetTotalCost()}");
         }
         public static void PrintSpending()
         {
@@ -490,12 +602,16 @@ namespace SimpleWalletConsoleApp
         public static void PrintHelp()
         {
             Console.WriteLine("You can type the following commands: ");
+            Console.WriteLine();
+            Console.WriteLine(" Option                      | Description");
+            Console.WriteLine("+----------------------------|---------------------------------------------------------------------------------------------------------+");
             Console.WriteLine("--select-walet               | Selects a wallet insrance in this model");
             Console.WriteLine("--select-task                | Selects a task to this model");
             Console.WriteLine("--add-receive                | Adds a receive to the wallet instance in the program");
             Console.WriteLine("--add-spending               | Adds a spending to the wallet instance in the program");
             Console.WriteLine("--add-transfer               | Adds a transfer to the wallet instance in the program");
             Console.WriteLine("--add-task                   | Adds a task to the model");
+            Console.WriteLine("--edit-task                  | Edit the task properties in the instance");
             Console.WriteLine("--display-transactions       | Displays all transactions registered in the wallet instance selected");
             Console.WriteLine("--dt-tag                     | Displays all tags transactions registered in the wallet instance selected with tag information");
             Console.WriteLine("--display-wallets            | Displays all wallets");

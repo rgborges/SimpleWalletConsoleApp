@@ -28,7 +28,7 @@ namespace SimpleWalletConsoleApp
         {
             if(Program.CurrentTaskId == -1)
             {
-                throw new BusinessException("No task is selected in this model instance");
+                throw new BusinessException("It doesn't exist a task selected in this instance ... please select a task in the instance");
             }
         }
         public static bool IsWalletSelected()

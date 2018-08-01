@@ -16,6 +16,7 @@ namespace SimpleWalletConsoleApp.Models.Function
         public Tag Tag { private set; get; }
         public List<Transaction> Transactions { set; get; }
         public DateTime RegisterDate { private set; get;}
+        public double Budget { protected set; get; }
         public Task(string name, TagColor color)
         {
             this.Id = Guid.NewGuid();
@@ -23,6 +24,23 @@ namespace SimpleWalletConsoleApp.Models.Function
             this.Tag = new Tag(Name, color);
             this.Transactions = new List<Transaction>();
             this.RegisterDate = DateTime.Now;
+        }
+        public Task(string name, double budget, TagColor color)
+        {
+            this.Id = Guid.NewGuid();
+            this.Name = name;
+            this.Tag = new Tag(Name, color);
+            this.Transactions = new List<Transaction>();
+            this.RegisterDate = DateTime.Now;
+            this.Budget = budget;
+        }
+        public void EditName(string name)
+        {
+            this.Name = name;
+        }
+        public void EditRegisterDate(DateTime date)
+        {
+            this.RegisterDate = date;
         }
         public double GetTotalCost()
         {
@@ -46,7 +64,7 @@ namespace SimpleWalletConsoleApp.Models.Function
         }
         public override string ToString()
         {
-            return $"Name: {Name}, Tag {Tag.Name} Total Cost: R$ {GetTotalCost().ToString(CultureInfo.InvariantCulture)},  Guid: {Id}, Register Date {RegisterDate}";
+            return $"Name: {Name}, Tag {Tag.Name} Total Cost: R$ {GetTotalCost().ToString(CultureInfo.InvariantCulture)},  Budget: R$ {Budget.ToString("F2", CultureInfo.InvariantCulture)}, Guid: {Id}, Register Date {RegisterDate}";
         }
     }
 }

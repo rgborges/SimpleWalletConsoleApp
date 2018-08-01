@@ -13,6 +13,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
         public TransactionType Type {protected set; get;}
         public Wallet Origin { protected set; get;}
         public DateTime Date { protected set; get;}
+        public CashFlow Flow { protected set; get; }
         public Transaction(double value, string description,TransactionType type, Wallet wallet)
         {
             this.Value = value;
@@ -21,6 +22,7 @@ namespace SimpleWalletConsoleApp.Models.Financial
             this.Origin = wallet;
             this.Id = Guid.NewGuid();
             this.Date = DateTime.Now;
+            this.Flow = CashFlow.Invalid;
         }
         public Transaction(double value, string description,TransactionType type, Wallet wallet, Tag tag)
         {
@@ -31,11 +33,35 @@ namespace SimpleWalletConsoleApp.Models.Financial
             this.Tag = tag;
             this.Id = Guid.NewGuid();
             this.Date = DateTime.Now;
+            this.Flow = CashFlow.Invalid;
+        }
+        public void  SetAsOutputFlow()
+        {
+            Flow = CashFlow.Output;
+        }
+        public void  SetAsInputFlow()
+        {
+            Flow = CashFlow.Input;
         }
         public override string ToString()
         {
-            return $"Value:{Value.ToString("0:C",CultureInfo.InvariantCulture)}, Date: {Date}, Description: {Description}, Guid: {Id} ";
+            string result =  null;
+            switch (Type)
+            {
+                case TransactionType.Receive:
+                    result = $" + Value: R$ {Value.ToString("F2",CultureInfo.InvariantCulture)}, Date: {Date}, Description: {Description}, Guid: {Id} ";
+                break;
+                case TransactionType.Spending:
+                    result = $" - Value: R$ {Value.ToString("F2",CultureInfo.InvariantCulture)}, Date: {Date}, Description: {Description}, Guid: {Id} ";
+                break;
+                case (TransactionType.Transfering):
+                    result = $" <-> Value: R$ {Value.ToString("F2",CultureInfo.InvariantCulture)}, Date: {Date}, Description: {Description}, Guid: {Id} ";
+                break;
+                default:
+                    result = $" ? Value: R$ {Value.ToString("F2",CultureInfo.InvariantCulture)}, Date: {Date}, Description: {Description}, Guid: {Id} ";
+                break;
+            }
+            return result;
         }
-
     }
 }

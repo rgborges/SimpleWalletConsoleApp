@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Collections.Generic;
 using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Exceptions;
 using SimpleWalletConsoleApp.Models.Financial;
 using SimpleWalletConsoleApp.Models.Function;
 
@@ -14,7 +15,7 @@ namespace SimpleWalletConsoleApp
         {
             Program.Header = Settings.ApplicationName;
             Program.CurrentWalletIndex = -1;
-            Program.CurrentTaskId = -1;
+            Program.CurrentFinancialTaskId = -1;
         }
         public static void UpdateHeader()
         {
@@ -22,11 +23,11 @@ namespace SimpleWalletConsoleApp
             {
                 string walletName = Program.Wallets[Program.CurrentWalletIndex].Name;
                 Program.Header = Settings.ApplicationName + @"\" + $"{walletName}";
-                if(BusinessRules.IsTaskSelected())
+                if(BusinessRules.IsFinancialTaskSelected())
                 {
-                    string taskName = Program.Tasks[Program.CurrentTaskId].Name;
-                    double subTotal = Program.Tasks[Program.CurrentTaskId].GetTotalCost();
-                    Program.Header += $"[{taskName}, R$ {subTotal.ToString(CultureInfo.InvariantCulture)}]";
+                    string FinancialtaskName = Program.FinancialTasks[Program.CurrentFinancialTaskId].Name;
+                    double subTotal = Program.FinancialTasks[Program.CurrentFinancialTaskId].GetTotalCost();
+                    Program.Header += $"[{FinancialtaskName}, R$ {subTotal.ToString(CultureInfo.InvariantCulture)}]";
                 }
             }
             else
@@ -34,13 +35,28 @@ namespace SimpleWalletConsoleApp
                 Program.Header = Settings.ApplicationName;
             }
         }
+        public static void ShowInstanceInfo()
+        {
+            if(BusinessRules.IsUserSelected())
+            {
+                Display.PrintUserInfo();
+            }
+            else if(BusinessRules.IsWalletSelected())
+            {
+                Display.PrintWalletInfo();
+            }
+            else
+            {
+                throw new BusinessException("None info to be displayed, plese select an object to the instance.");
+            }
+        }
         public static void UpdateHeader(string componet)
         {
             Program.Header = Settings.ApplicationName + @"\" + componet;
         }
-        public static void UpdateHeaderWithTask(Task task)
+        public static void UpdateHeaderWithFinancialTask(FinancialTask Financialtask)
         {
-            Program.Header = Settings.ApplicationName +  $"[{task.Name}]";
+            Program.Header = Settings.ApplicationName +  $"[{Financialtask.Name}]";
         }
         public static ConsoleColor GetTagColor(Tag tag)
         {

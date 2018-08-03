@@ -88,13 +88,13 @@ namespace SimpleWalletConsoleApp
             Console.Write("Description: ");
             string description = Console.ReadLine();
             TransactionType type = TransactionType.Receive;
-            if(BusinessRules.IsTaskSelected())
+            if(BusinessRules.IsFinancialTaskSelected())
             {
-                Console.WriteLine("We've note that you hava a task selected, so the receive will be referenced to this task!.");
-                Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], Program.Tasks[Program.CurrentTaskId].Tag);
+                Console.WriteLine("We've note that you hava a Financialtask selected, so the receive will be referenced to this Financialtask!.");
+                Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], Program.FinancialTasks[Program.CurrentFinancialTaskId].Tag);
                 Program.Transactions.Add(receive);
                 Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
-                Program.Tasks[Program.CurrentTaskId].Transactions.Add(receive);
+                Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions.Add(receive);
             }
             else
             {
@@ -135,13 +135,13 @@ namespace SimpleWalletConsoleApp
             Console.Write("Description: ");
             string description = Console.ReadLine();
             TransactionType type = TransactionType.Spending;
-            if(BusinessRules.IsTaskSelected())
+            if(BusinessRules.IsFinancialTaskSelected())
             {
-                Console.WriteLine("We've note that you hava a task selected, so this spending will be referenced to this task!.");
-                Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], Program.Tasks[Program.CurrentTaskId].Tag);
+                Console.WriteLine("We've note that you hava a Financialtask selected, so this spending will be referenced to this Financialtask!.");
+                Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], Program.FinancialTasks[Program.CurrentFinancialTaskId].Tag);
                 Program.Transactions.Add(spending);
                 Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
-                Program.Tasks[Program.CurrentTaskId].Transactions.Add(spending);
+                Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions.Add(spending);
             }
             else
             {
@@ -198,14 +198,14 @@ namespace SimpleWalletConsoleApp
             char answer = char.Parse(Console.ReadLine());
             if( answer == 'y')
             {
-                if(BusinessRules.IsTaskSelected())
+                if(BusinessRules.IsFinancialTaskSelected())
                 {
-                    Console.WriteLine("We've note that you hava a task selected, so this transfer will be referenced to this task!.");
-                    Transaction transfer = new Transaction(value, description, TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex], Program.Tasks[Program.CurrentTaskId].Tag);
+                    Console.WriteLine("We've note that you hava a Financialtask selected, so this transfer will be referenced to this Financialtask!.");
+                    Transaction transfer = new Transaction(value, description, TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex], Program.FinancialTasks[Program.CurrentFinancialTaskId].Tag);
                     Program.Wallets[Program.CurrentWalletIndex].Debit(transfer);
                     Program.Wallets[searchedWalletIndex].Deposit(transfer);
                     Program.Transactions.Add(transfer);
-                    Program.Tasks[Program.CurrentTaskId].Transactions.Add(transfer);
+                    Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions.Add(transfer);
                 }
                 else
                 {
@@ -257,22 +257,22 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine();
             Console.WriteLine($"Wallet {wallet} added sucessfully to this model :D !  ");
         }
-        public static void PrintAddNewTask()
+        public static void PrintAddNewFinancialTask()
         {
-            Console.WriteLine("You've selected to add a task to your model.");
-            Console.WriteLine("Tasks can be a activity like a trip or shopping..");
+            Console.WriteLine("You've selected to add a Financialtask to your model.");
+            Console.WriteLine("FinancialTasks can be a activity like a trip or shopping..");
             Console.WriteLine();
-            Console.Write("Please define the task name: ");
+            Console.Write("Please define the Financialtask name: ");
             string name = Console.ReadLine(); 
             TagColor color = PrintSelectTagColor();
             Console.WriteLine();
             Console.Write("Budget: ");
             double budget = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-            Task task = new Task(name, budget, color);
-            Program.Tasks.Add(task);
-            Program.Tags.Add(task.Tag);
+            FinancialTask Financialtask = new FinancialTask(name, budget, color);
+            Program.FinancialTasks.Add(Financialtask);
+            Program.Tags.Add(Financialtask.Tag);
             Console.WriteLine();
-            Console.WriteLine($"The task: {task}, was added sucessfully to this model!");
+            Console.WriteLine($"The Financialtask: {Financialtask}, was added sucessfully to this model!");
         }
         public static TagColor PrintSelectTagColor()
         {
@@ -306,32 +306,32 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine($"You've chossen the option {option}");
             return colorResult;
         }
-        public static void PrintSelectTask()
+        public static void PrintSelectFinancialTask()
         {
-            Console.WriteLine("Choose a task to this model instance: ");
-            PrintTasks();
+            Console.WriteLine("Choose a Financialtask to this model instance: ");
+            PrintFinancialTasks();
             Console.WriteLine();
             Console.Write("Select the Guid: ");
-            Guid searchedTaskId = Guid.Parse(Console.ReadLine());
-            int resultIndex = Program.Tasks.FindIndex(x => x.Id == searchedTaskId);
+            Guid searchedFinancialTaskId = Guid.Parse(Console.ReadLine());
+            int resultIndex = Program.FinancialTasks.FindIndex(x => x.Id == searchedFinancialTaskId);
             if(resultIndex == -1)
             {
-                throw new SimpleWalletException("Was not possible to find this task :( ");
+                throw new SimpleWalletException("Was not possible to find this Financialtask :( ");
             }
-            Program.CurrentTaskId = resultIndex;
-            Console.WriteLine($"You've selected the task {Program.Tasks[Program.CurrentTaskId]}");
-            ProgramMechanics.UpdateHeaderWithTask(Program.Tasks[Program.CurrentTaskId]);
+            Program.CurrentFinancialTaskId = resultIndex;
+            Console.WriteLine($"You've selected the Financialtask {Program.FinancialTasks[Program.CurrentFinancialTaskId]}");
+            ProgramMechanics.UpdateHeaderWithFinancialTask(Program.FinancialTasks[Program.CurrentFinancialTaskId]);
         }
-        public static void PrintEditTask()
+        public static void PrintEditFinancialTask()
         {
-            //TODO: Edit task selected in the instance
-            BusinessRules.ChecksIfATaskIsSelected();
-            var task = Program.Tasks[Program.CurrentTaskId];
-            Console.WriteLine("You've seleced to edit this task properties: ");
+            //TODO: Edit Financialtask selected in the instance
+            BusinessRules.ChecksIfAFinancialTaskIsSelected();
+            var Financialtask = Program.FinancialTasks[Program.CurrentFinancialTaskId];
+            Console.WriteLine("You've seleced to edit this Financialtask properties: ");
             Console.WriteLine();
-            Console.WriteLine(task);
+            Console.WriteLine(Financialtask);
             Console.WriteLine();
-            Console.WriteLine("Printing the task properties: ");
+            Console.WriteLine("Printing the Financialtask properties: ");
             Console.WriteLine();
             Console.WriteLine("1 - Name ");
             Console.WriteLine("2 - Register Date ");
@@ -343,24 +343,24 @@ namespace SimpleWalletConsoleApp
                 case 1:
                     Console.Write("Type the new name : ");
                     string newName = Console.ReadLine();
-                    task.EditName(newName);
-                    Console.WriteLine("task updated sucessfully");
+                    Financialtask.EditName(newName);
+                    Console.WriteLine("Financialtask updated sucessfully");
                 break;
                 case 2:
                     Console.WriteLine("Type the new name : ");
                     DateTime newTime = DateTime.Parse(Console.ReadLine());
-                    task.EditRegisterDate(newTime);
-                    Console.WriteLine("task updated sucessfully");
+                    Financialtask.EditRegisterDate(newTime);
+                    Console.WriteLine("Financialtask updated sucessfully");
                 break;
                 default:
-                    Console.WriteLine("Invalid code for task editing! ");
+                    Console.WriteLine("Invalid code for Financialtask editing! ");
                 break;
             }
         }
         public static void PrintEditWallet()
         {
             BusinessRules.ChecksIfWalletIsSelected();
-            Console.WriteLine("You've selected to write the task properties.");
+            Console.WriteLine("You've selected to write the Financialtask properties.");
             Console.WriteLine($"{Program.Wallets[Program.CurrentWalletIndex]} : ");
             var wallet = Program.Wallets[Program.CurrentWalletIndex];
             Console.WriteLine();
@@ -483,18 +483,18 @@ namespace SimpleWalletConsoleApp
                PrintTransaction(p);
             }
         }
-        public static void PrintTasksTransactions()
+        public static void PrintFinancialTasksTransactions()
         {
-            BusinessRules.ChecksIfATaskIsSelected();
-            var query = from p in Program.Tasks[Program.CurrentTaskId].Transactions orderby p.Date descending select p;
-            Console.WriteLine("Diaplay all task transtactions: ");
+            BusinessRules.ChecksIfAFinancialTaskIsSelected();
+            var query = from p in Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions orderby p.Date descending select p;
+            Console.WriteLine("Diaplay all Financialtask transtactions: ");
             Console.WriteLine();
             foreach (Transaction p in query)
             {
                 PrintTransaction(p);
             }
             Console.WriteLine();
-            Console.WriteLine($"Subtotal:  {Program.Tasks[Program.CurrentTaskId].GetTotalCost()}");
+            Console.WriteLine($"Subtotal:  {Program.FinancialTasks[Program.CurrentFinancialTaskId].GetTotalCost()}");
         }
         public static void PrintSpending()
         {
@@ -559,11 +559,11 @@ namespace SimpleWalletConsoleApp
                 Console.ForegroundColor = aux;
             }
         }
-        public static void PrintTasks()
+        public static void PrintFinancialTasks()
         {
-            Console.WriteLine("Printing tasks registered: ");
+            Console.WriteLine("Printing Financialtasks registered: ");
             Console.WriteLine();
-            foreach(Task p in Program.Tasks)
+            foreach(FinancialTask p in Program.FinancialTasks)
             {
                 Console.WriteLine(p);
             }
@@ -573,6 +573,26 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine();
             Console.WriteLine("Exiting the program ...");
             Console.WriteLine("Bye Bye ;D ... Se ya!");
+            Console.WriteLine();
+        }
+        public static void PrintInstanceInfo()
+        {
+            ProgramMechanics.ShowInstanceInfo();
+        }
+        public static void PrintWalletInfo()
+        {
+            BusinessRules.ChecksIfWalletIsSelected();
+            var wallet = Program.Wallets[Program.CurrentWalletIndex];
+            Console.WriteLine();
+            Console.WriteLine($"Showing info about the wallet ");
+            Console.WriteLine();
+            Console.WriteLine($"Id: {wallet.Id}");
+            Console.WriteLine($"Name: {wallet.Name}");
+            Console.WriteLine($"Ballance: {wallet.Ballance}");
+            Console.WriteLine($"Owner: {wallet.Owner}");
+            Console.WriteLine($"Transactions Number: {wallet.GetTransactionsNumber()}");
+            Console.WriteLine($"Total Spending: {wallet.GetTotalSpending().ToString("F2", CultureInfo.InvariantCulture)}");
+            Console.WriteLine($"Total Receives: {wallet.GetTotalReceives().ToString("F2", CultureInfo.InvariantCulture)}");
             Console.WriteLine();
         }
         public static void PrintUserInfo()
@@ -606,17 +626,17 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine(" Option                      | Description");
             Console.WriteLine("+----------------------------|---------------------------------------------------------------------------------------------------------+");
             Console.WriteLine("--select-walet               | Selects a wallet insrance in this model");
-            Console.WriteLine("--select-task                | Selects a task to this model");
+            Console.WriteLine("--select-Financialtask                | Selects a Financialtask to this model");
             Console.WriteLine("--add-receive                | Adds a receive to the wallet instance in the program");
             Console.WriteLine("--add-spending               | Adds a spending to the wallet instance in the program");
             Console.WriteLine("--add-transfer               | Adds a transfer to the wallet instance in the program");
-            Console.WriteLine("--add-task                   | Adds a task to the model");
-            Console.WriteLine("--edit-task                  | Edit the task properties in the instance");
+            Console.WriteLine("--add-Financialtask                   | Adds a Financialtask to the model");
+            Console.WriteLine("--edit-Financialtask                  | Edit the Financialtask properties in the instance");
             Console.WriteLine("--display-transactions       | Displays all transactions registered in the wallet instance selected");
             Console.WriteLine("--dt-tag                     | Displays all tags transactions registered in the wallet instance selected with tag information");
             Console.WriteLine("--display-wallets            | Displays all wallets");
             Console.WriteLine("--display-tags               | Displays all tags registered in the system");
-            Console.WriteLine("--display-tasks              | Displays all tasks for the wallet in the instance.");
+            Console.WriteLine("--display-Financialtasks              | Displays all Financialtasks for the wallet in the instance.");
         }
    
     }

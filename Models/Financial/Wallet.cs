@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using SimpleWalletConsoleApp.Models;
 using SimpleWalletConsoleApp.Exceptions;
@@ -80,6 +81,30 @@ namespace SimpleWalletConsoleApp.Models.Financial
         public void EditRegisterDate(DateTime newDate)
         {
             this.RgeisterDate = newDate;
+        }
+        public int GetTransactionsNumber()
+        {
+            return Transactions.Count;
+        }
+        public double GetTotalSpending()
+        {
+            double sum = 0;
+            var query = from p in Transactions where p.Type == TransactionType.Spending orderby p.Date descending select p;
+            foreach(var p in query)
+            {
+                sum += p.Value;
+            }
+            return sum;
+        }
+        public double GetTotalReceives()
+        {
+            double sum = 0;
+            var query = from p in Transactions where p.Type == TransactionType.Receive orderby p.Date descending select p;
+            foreach(var p in query)
+            {
+                sum += p.Value;
+            }
+            return sum;
         }
         public override string ToString()
         {

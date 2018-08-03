@@ -24,11 +24,22 @@ namespace SimpleWalletConsoleApp
                 throw new BusinessException("No User instance is selected.");
             }
         }
-        public static void ChecksIfATaskIsSelected()
+        public static void ChecksIfAFinancialTaskIsSelected()
         {
-            if(Program.CurrentTaskId == -1)
+            if(Program.CurrentFinancialTaskId == -1)
             {
-                throw new BusinessException("It doesn't exist a task selected in this instance ... please select a task in the instance");
+                throw new BusinessException("It doesn't exist a Financialtask selected in this instance ... please select a Financialtask in the instance");
+            }
+        }
+        public static bool IsUserSelected()
+        {
+            if(Program.CurrentUserIndex == -1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         public static bool IsWalletSelected()
@@ -42,9 +53,9 @@ namespace SimpleWalletConsoleApp
                return false;
            }
         }
-        public static bool IsTaskSelected()
+        public static bool IsFinancialTaskSelected()
         {
-            if(Program.CurrentTaskId >= 0)
+            if(Program.CurrentFinancialTaskId >= 0)
             {
                 return true;
             }

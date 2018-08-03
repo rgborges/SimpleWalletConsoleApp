@@ -9,7 +9,7 @@ using SimpleWalletConsoleApp.Models.Financial;
 
 namespace SimpleWalletConsoleApp.Models.Function
 {
-    public class Task
+    public class FinancialTask
     {
         public Guid Id { private set; get;}
         public string Name { set; get;}
@@ -17,7 +17,7 @@ namespace SimpleWalletConsoleApp.Models.Function
         public List<Transaction> Transactions { set; get; }
         public DateTime RegisterDate { private set; get;}
         public double Budget { protected set; get; }
-        public Task(string name, TagColor color)
+        public FinancialTask(string name, TagColor color)
         {
             this.Id = Guid.NewGuid();
             this.Name = name;
@@ -25,7 +25,7 @@ namespace SimpleWalletConsoleApp.Models.Function
             this.Transactions = new List<Transaction>();
             this.RegisterDate = DateTime.Now;
         }
-        public Task(string name, double budget, TagColor color)
+        public FinancialTask(string name, double budget, TagColor color)
         {
             this.Id = Guid.NewGuid();
             this.Name = name;

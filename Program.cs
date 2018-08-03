@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SimpleWalletConsoleApp.Models;
 using SimpleWalletConsoleApp.Models.Financial;
 using SimpleWalletConsoleApp.Models.Function;
@@ -13,8 +14,8 @@ namespace SimpleWalletConsoleApp
         public static List<SystemUser> Users = new List<SystemUser>();
         public static List<Wallet> Wallets = new List<Wallet>();
         public static List<Transaction> Transactions = new List<Transaction>();
-        public static List<Task> Tasks = new List<Task>();
-        public static int CurrentWalletIndex = -1, CurrentUserIndex = -1, CurrentTaskId = -1;
+        public static List<FinancialTask> FinancialTasks = new List<FinancialTask>();
+        public static int CurrentWalletIndex = -1, CurrentUserIndex = -1, CurrentFinancialTaskId = -1;
         public static string Header = Settings.ApplicationName;
         static void Main(string[] args)
         {
@@ -40,9 +41,9 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintSelectWallet();
                                 Console.ReadLine();
                             break;
-                            case "--select-task":
-                            //TODO: Selects a task
-                                Display.PrintSelectTask();
+                            case "--select-financialtask":
+                            //TODO: Selects a Financialtask
+                                Display.PrintSelectFinancialTask();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--add-receive":
@@ -65,14 +66,14 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintAddNewTransfer();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--add-task":
-                            //TODO: Adds a task to this model
-                                Display.PrintAddNewTask();
+                            case "--add-financialtask":
+                            //TODO: Adds a Financialtask to this model
+                                Display.PrintAddNewFinancialTask();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--edit-task":
-                            //TODO: Edit task properties
-                                Display.PrintEditTask();
+                            case "--edit-financialtask":
+                            //TODO: Edit Financialtask properties
+                                Display.PrintEditFinancialTask();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--edit-wallet":
@@ -104,22 +105,22 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintWalletTransactionsWithTags();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--dt-task":
-                                Display.PrintTasksTransactions();
+                            case "--dt-Financialtask":
+                                Display.PrintFinancialTasksTransactions();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--display-tasks":
-                            //TODO: Displays tasks in the model
-                                Display.PrintTasks();
+                            case "--display-Financialtasks":
+                            //TODO: Displays Financialtasks in the model
+                                Display.PrintFinancialTasks();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--display-info":
                             //TODO: Display user info
-                                Display.PrintUserInfo();
+                                Display.PrintInstanceInfo();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--exit":
-                            //TODO: Reset wallet, tasks in the instance
+                            //TODO: Reset wallet, Financialtasks in the instance
                                 ProgramMechanics.ResetAccount();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;

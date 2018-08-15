@@ -15,7 +15,8 @@ namespace SimpleWalletConsoleApp
         public static List<Wallet> Wallets = new List<Wallet>();
         public static List<Transaction> Transactions = new List<Transaction>();
         public static List<FinancialTask> FinancialTasks = new List<FinancialTask>();
-        public static int CurrentWalletIndex = -1, CurrentUserIndex = -1, CurrentFinancialTaskId = -1;
+        public static List<FinancialPlan> FinancialPlans = new List<FinancialPlan>();
+        public static int CurrentWalletIndex = -1, CurrentUserIndex = -1, CurrentFinancialTaskId = -1, CurrentFinancialPlanId = -1;
         public static string Header = Settings.ApplicationName;
         static void Main(string[] args)
         {
@@ -41,7 +42,7 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintSelectWallet();
                                 Console.ReadLine();
                             break;
-                            case "--select-financialtask":
+                            case "--select-task":
                             //TODO: Selects a Financialtask
                                 Display.PrintSelectFinancialTask();
                                 Display.PrintTypeAnyKeyToConitinue();
@@ -66,12 +67,17 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintAddNewTransfer();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--add-financialtask":
+                            case "--add-task":
                             //TODO: Adds a Financialtask to this model
                                 Display.PrintAddNewFinancialTask();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--edit-financialtask":
+                            case "--add-plan":
+                            //TODO: Adds a financial plan to the model
+                                Display.PrintAddNewFinancialPlan();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--edit-task":
                             //TODO: Edit Financialtask properties
                                 Display.PrintEditFinancialTask();
                                 Display.PrintTypeAnyKeyToConitinue();
@@ -101,15 +107,20 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintTransactions();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--display-plans":
+                            //TODO: Displays finalcial plans registered in this model
+                                Display.PrintFinancialPlans();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--dt-tag":
                                 Display.PrintWalletTransactionsWithTags();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--dt-Financialtask":
+                            case "--dt-task":
                                 Display.PrintFinancialTasksTransactions();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
-                            case "--display-Financialtasks":
+                            case "--display-tasks":
                             //TODO: Displays Financialtasks in the model
                                 Display.PrintFinancialTasks();
                                 Display.PrintTypeAnyKeyToConitinue();

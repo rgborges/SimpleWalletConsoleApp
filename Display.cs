@@ -18,7 +18,7 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine($"Borges Sofwtare Labs - v {Settings.AplicationVersion} - SimpleWallet Console App 2018");
             Console.WriteLine();
             ConsoleColor aux = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write($"{header}>");
             Console.ForegroundColor = aux;
         }
@@ -273,6 +273,27 @@ namespace SimpleWalletConsoleApp
             Program.Tags.Add(Financialtask.Tag);
             Console.WriteLine();
             Console.WriteLine($"The Financialtask: {Financialtask}, was added sucessfully to this model!");
+        }
+        public static void PrintAddNewFinancialPlan()
+        {
+            BusinessRules.ChecksIfWalletIsSelected();
+            Console.WriteLine("You've selected to add a financial plan to the model.");
+            Console.WriteLine("Financial plan are financial tasks that you plan to do, without discounting your current ballance in your wallet.");
+            Console.Write("Title: ");
+            string title = Console.ReadLine();
+            Display.PrintTags();
+            Console.WriteLine();
+            Console.Write("Tag guid: ");
+            Guid searchedTagGuid = Guid.Parse(Console.ReadLine());
+            int tagIndex = Program.Tags.FindIndex( x => x.Id == searchedTagGuid);
+            if (tagIndex == -1 )
+            {
+                throw new BusinessException("Tag guid doesn't exist. Please check your model");
+            }
+            var newFinncialPlan = new FinancialPlan(title, Program.Tags[tagIndex]);
+            Program.FinancialPlans.Add(newFinncialPlan);
+            Console.WriteLine("Financial plan added sucessfully !");
+            Console.WriteLine();
         }
         public static TagColor PrintSelectTagColor()
         {
@@ -567,6 +588,16 @@ namespace SimpleWalletConsoleApp
             {
                 Console.WriteLine(p);
             }
+        }
+        public static void PrintFinancialPlans()
+        {
+            Console.WriteLine("Printing financial plans registered in this model: ");
+            Console.WriteLine();
+            foreach ( FinancialPlan p in Program.FinancialPlans)
+            {
+                Console.WriteLine(p);
+            }
+            Console.WriteLine();
         }
         public static void PrintMenuQuitMessage()
         {

@@ -25,6 +25,8 @@ namespace SimpleWalletConsoleApp
             Program.Tags.Add(new Tag("Housing", TagColor.Green));
             Program.Tags.Add(new Tag("Health", TagColor.Blue));
             Program.Tags.Add(new Tag("Bills", TagColor.Yellow));
+            Program.Tags.Add(new Tag("IT", TagColor.Blue));
+            
         }
     }
 }

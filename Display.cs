@@ -68,6 +68,22 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine();
             ProgramMechanics.UpdateHeader(Program.Wallets[Program.CurrentWalletIndex].Name);
         }
+        public static void PrintSelectFinancialPlan()
+        {
+            Console.WriteLine("Please select the financial task in this instance: ");
+            Display.PrintFinancialPlans();
+            Console.WriteLine();
+            Console.Write("GUID: ");
+            Guid guidSearched = Guid.Parse(Console.ReadLine());
+            int searchedPlanIndex = Program.FinancialPlans.FindIndex( x => x.Id == guidSearched);
+            if( searchedPlanIndex == -1 )
+            {
+                throw new BusinessException("This task doesn't exist in the list.");
+            }
+            Program.CurrentFinancialPlanId = searchedPlanIndex;
+            Console.WriteLine();
+            Console.WriteLine($"You've selected the plan {Program.FinancialPlans[Program.CurrentFinancialPlanId]}");
+        }
         public static void PrintSystemWallets()
         {
              Console.WriteLine();
@@ -77,6 +93,20 @@ namespace SimpleWalletConsoleApp
                  Console.WriteLine(p);
              }
              Console.WriteLine();
+        }
+        public static void PrintAddNewTag()
+        {
+            //TODO: Procedure to add a new tag to the model
+            Console.WriteLine("You've selected the option to add tag:");
+            Console.WriteLine();
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine();
+            TagColor color = Display.PrintSelectTagColor();
+            Tag newTag = new Tag(name, color);
+            Program.Tags.Add(newTag);
+            Console.WriteLine("Tag added sucessfully into model. ");
+            Console.WriteLine();
         }
         public static void PrintAddNewReceive()
         {
@@ -95,6 +125,13 @@ namespace SimpleWalletConsoleApp
                 Program.Transactions.Add(receive);
                 Program.Wallets[Program.CurrentWalletIndex].Deposit(receive);
                 Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions.Add(receive);
+            }
+            else if(BusinessRules.IsFinancialPlanSelected())
+            {
+                Console.WriteLine("You're if a financial plan selected in the instance. This receive will be added in this plan but not in this model.");
+                Transaction receive = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex]);
+                Program.FinancialPlans[Program.CurrentFinancialPlanId].AddTransaction(receive);
+                Console.WriteLine("Receive added sucessfully in this plan.");
             }
             else
             {
@@ -142,6 +179,15 @@ namespace SimpleWalletConsoleApp
                 Program.Transactions.Add(spending);
                 Program.Wallets[Program.CurrentWalletIndex].Deposit(spending);
                 Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions.Add(spending);
+            }
+            else if(BusinessRules.IsFinancialPlanSelected())
+            {
+                Console.Write("Url: ");
+                Uri uri = new Uri(Console.ReadLine());
+                Console.WriteLine("You're if a financial plan selected in the instance. This spending will be added in this plan but not in this model.");
+                Transaction spending = new Transaction(value, description, type, Program.Wallets[Program.CurrentWalletIndex], Program.FinancialPlans[Program.CurrentFinancialPlanId].Tag, uri);
+                Program.FinancialPlans[Program.CurrentFinancialPlanId].AddTransaction(spending);
+                Console.WriteLine("Spending added sucessfully in this plan.");
             }
             else
             {
@@ -206,6 +252,13 @@ namespace SimpleWalletConsoleApp
                     Program.Wallets[searchedWalletIndex].Deposit(transfer);
                     Program.Transactions.Add(transfer);
                     Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions.Add(transfer);
+                }
+                else if(BusinessRules.IsFinancialPlanSelected())
+                {
+                    Console.WriteLine("You're if a financial plan selected in the instance. This transfer will be added in this plan but not in this model.");
+                    Transaction transfer = new Transaction(value, description,TransactionType.Transfering, Program.Wallets[Program.CurrentWalletIndex]);
+                    Program.FinancialPlans[Program.CurrentFinancialPlanId].AddTransaction(transfer);
+                    Console.WriteLine("Transfer added sucessfully in this plan.");
                 }
                 else
                 {
@@ -378,6 +431,103 @@ namespace SimpleWalletConsoleApp
                 break;
             }
         }
+        //Edits a transaction from the object selected on the model instance (Wallet, Plan or Task)
+        public static void PrintEditTransaction()
+        {
+            Console.WriteLine("You've selected the otion to edit a transaction.");
+            Console.WriteLine("Please inform the transaction guid.");
+            Console.Write("GUID: ");
+            Guid searchedGuid = Guid.Parse(Console.ReadLine());
+            if(BusinessRules.IsFinancialTaskSelected())
+            {
+                //TODO: Search transactions on Task transactions list
+                int unknowIndex = Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions.FindIndex( x => x.Id == searchedGuid);
+                if(unknowIndex == -1)
+                {
+                    throw new BusinessException("It doesn't exist any transaction with this guid on this task.");
+                }
+                Transaction pointer = Program.FinancialTasks[Program.CurrentFinancialTaskId].Transactions[unknowIndex];
+                Console.WriteLine("Wich optio do you want to do ?");
+                Console.WriteLine("1 - Description.");
+                Console.WriteLine("2 - Value.");
+                Console.WriteLine("3 - Date.");
+                Console.WriteLine();
+                Console.Write("Choose an option: ");
+                int option = int.Parse(Console.ReadLine());
+                switch(option)
+                {
+                    case 1:
+                        Console.Write("Type the new description: ");
+                        string newDescription = Console.ReadLine();
+                        pointer.Description = newDescription;
+                        Console.WriteLine("Description changed sucessfully.");
+                    break;
+                    case 2:
+                        Console.Write("Type the new value: ");
+                        double newValue = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                        pointer.Value = newValue;
+                        Console.WriteLine("Value changed sucessfully.");
+                    break;
+                    case 3:
+                        Console.Write("Type the new date: ");
+                        DateTime newDate = DateTime.Parse(Console.ReadLine());
+                        pointer.SetNewDate(newDate);
+                        Console.WriteLine("Date changed sucessfully.");
+                    break;
+                    default:
+                        throw new InvalidOptionException();
+                }
+            }
+            else if(BusinessRules.IsFinancialPlanSelected())
+            {
+                 //TODO: Search transactions on Task transactions list
+                int unknowIndex = Program.FinancialPlans[Program.CurrentFinancialPlanId].GetTransactions().FindIndex( x => x.Id == searchedGuid);
+                if(unknowIndex == -1)
+                {
+                    throw new BusinessException("It doesn't exist any transaction with this guid on this plan.");
+                }
+                Transaction pointer = Program.FinancialPlans[Program.CurrentFinancialPlanId].GetTransactions()[unknowIndex];
+                Console.WriteLine("Wich optio do you want to do ?");
+                Console.WriteLine("1 - Description.");
+                Console.WriteLine("2 - Value.");
+                Console.WriteLine("3 - Date.");
+                Console.WriteLine();
+                Console.Write("Choose an option: ");
+                int option = int.Parse(Console.ReadLine());
+                switch(option)
+                {
+                    case 1:
+                        Console.Write("Type the new description: ");
+                        string newDescription = Console.ReadLine();
+                        pointer.Description = newDescription;
+                        Console.WriteLine("Description changed sucessfully.");
+                    break;
+                    case 2:
+                        Console.Write("Type the new value: ");
+                        double newValue = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                        pointer.Value = newValue;
+                        Console.Write("Value changed sucessfully.");
+                    break;
+                    case 3:
+                        Console.Write("Type the new date: ");
+                        DateTime newDate = DateTime.Parse(Console.ReadLine());
+                        pointer.SetNewDate(newDate);
+                        Console.WriteLine("Date changed sucessfully.");
+                    break;
+                    default:
+                        throw new InvalidOptionException();
+                }
+            }
+            else if(BusinessRules.IsWalletSelected())
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new BusinessException("None wallet is selected in this model.");
+            }
+        }
+        //Prints the steps to edit a wallet selects on the model instance
         public static void PrintEditWallet()
         {
             BusinessRules.ChecksIfWalletIsSelected();
@@ -416,6 +566,55 @@ namespace SimpleWalletConsoleApp
                 break;
             }
         }
+        //Delets a transaction in the object on instnace (Wallet, Plan or Task)
+        public static void PrintDeleteTransaction()
+        {
+            if(BusinessRules.IsFinancialTaskSelected())
+            {
+                //Goes to task transaction delete procedure
+                PrintDeleteTaskTransaction();
+            }
+            else if(BusinessRules.IsFinancialPlanSelected())
+            {
+                //Goes to plan transaction delete procedure
+                PrintDeletePlanTransaction();
+            }
+            else if(BusinessRules.IsWalletSelected())
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new InvalidOptionException();
+            }
+        }
+        //Delets a transaction from the task selected on Program instance
+        private static void PrintDeleteTaskTransaction()
+        {
+            BusinessRules.ChecksIfAFinancialTaskIsSelected();
+            Console.WriteLine("You've selected the delete transaction option");
+            Console.WriteLine($"You're in a task {Program.FinancialTasks[Program.CurrentFinancialTaskId]}");
+            Console.Write("GUID: ");
+            Guid transactionToBeRemovedGuid = Guid.Parse(Console.ReadLine());
+            Program.FinancialTasks[Program.CurrentFinancialTaskId].RemoveTransactionById(transactionToBeRemovedGuid);
+            Console.WriteLine();
+            Console.WriteLine("Transaction removed sucessfully!");
+            Console.WriteLine();
+        }
+        //Delets a transactions from the plan selected on Program instance
+        private static void PrintDeletePlanTransaction()
+        {
+            BusinessRules.ChecksIfFinancialPlanIsSelected();
+            Console.WriteLine("You've selected the delete transaction option");
+            Console.WriteLine($"You're in a plan {Program.FinancialPlans[Program.CurrentFinancialPlanId]}");
+            Console.Write("GUID: ");
+            Guid transactionToBeRemovedGuid = Guid.Parse(Console.ReadLine());
+            Program.FinancialPlans[Program.CurrentFinancialPlanId].RemoveTransactionById(transactionToBeRemovedGuid);
+            Console.WriteLine();
+            Console.WriteLine("Transaction removed sucessfully!");
+            Console.WriteLine();
+        }
+        //Prints all tags object in the model
         public static void PrintTags()
         {
              var aux = Console.ForegroundColor;
@@ -598,6 +797,30 @@ namespace SimpleWalletConsoleApp
                 Console.WriteLine(p);
             }
             Console.WriteLine();
+        }
+        public static void PrintFinancialPlanTransactionsWithUri()
+        {
+            BusinessRules.ChecksIfWalletIsSelected();
+            BusinessRules.ChecksIfFinancialPlanIsSelected();
+            Console.WriteLine("Displaying transactions of this plan: ");
+            Console.WriteLine();
+            var query = from Transaction item in Program.FinancialPlans[Program.CurrentFinancialPlanId].GetTransactions() orderby item.Date descending select item;
+            foreach(Transaction p in query)
+            {
+                Console.WriteLine($"Date {p.Date}, Value: R$: {p.Value}, Uri: {p.GetUri()}");
+            }
+        }
+        public static void PrintFinancialPlanTransactions()
+        {
+            BusinessRules.ChecksIfWalletIsSelected();
+            BusinessRules.ChecksIfFinancialPlanIsSelected();
+            Console.WriteLine("Displaying transactions of this plan: ");
+            Console.WriteLine();
+            var query = from Transaction item in Program.FinancialPlans[Program.CurrentFinancialPlanId].GetTransactions() orderby item.Date descending select item;
+            foreach(Transaction p in query)
+            {
+                Console.WriteLine(p);
+            }
         }
         public static void PrintMenuQuitMessage()
         {

@@ -34,14 +34,7 @@ namespace SimpleWalletConsoleApp.Models.Function
             this.RegisterDate = DateTime.Now;
             this.Budget = budget;
         }
-        public void EditName(string name)
-        {
-            this.Name = name;
-        }
-        public void EditRegisterDate(DateTime date)
-        {
-            this.RegisterDate = date;
-        }
+        //Returns the total amount of sepending
         public double GetTotalCost()
         {
             double sum = 0;
@@ -52,6 +45,7 @@ namespace SimpleWalletConsoleApp.Models.Function
             }
             return sum;
         }
+        //Retuns the total ammount of receives
         public double GetTotalReceives()
         {
             double sum = 0;
@@ -61,6 +55,26 @@ namespace SimpleWalletConsoleApp.Models.Function
                 sum += p.Value;
             }
             return sum;
+        }
+        //Edits the name of this task
+        public void EditName(string name)
+        {
+            this.Name = name;
+        }
+        //Edits register date property
+        public void EditRegisterDate(DateTime date)
+        {
+            this.RegisterDate = date;
+        }
+        //Removes a transaction form this task by Id
+        public void RemoveTransactionById(Guid guid)
+        {
+            Transaction transactionSearched = Transactions.Find( x => x.Id == guid);
+            if(transactionSearched == null)
+            {
+                throw new ItemNotFoundException();
+            }
+            Transactions.Remove(transactionSearched);
         }
         public override string ToString()
         {

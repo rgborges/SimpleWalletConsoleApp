@@ -11,5 +11,7 @@ namespace SimpleWalletConsoleApp
     {
         public static string ApplicationName = "SimpleWallet";
         public static string AplicationVersion = "0.0.7";
+        public static string CurrentCurrencySymbol = "R$";
+        public static string CurrentLocation = "Brazil";
     }
 }

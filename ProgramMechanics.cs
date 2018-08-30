@@ -13,9 +13,11 @@ namespace SimpleWalletConsoleApp
     {
         public static void ResetAccount()
         {
+            //Resets the indexes
             Program.Header = Settings.ApplicationName;
             Program.CurrentWalletIndex = -1;
             Program.CurrentFinancialTaskId = -1;
+            Program.CurrentFinancialPlanId = -1;
         }
         public static void UpdateHeader()
         {
@@ -29,6 +31,12 @@ namespace SimpleWalletConsoleApp
                     double subTotal = Program.FinancialTasks[Program.CurrentFinancialTaskId].GetTotalCost();
                     Program.Header += $"[{FinancialtaskName}, R$ {subTotal.ToString(CultureInfo.InvariantCulture)}]";
                 }
+                else if(BusinessRules.IsFinancialPlanSelected())
+                {
+                    string financialPlanName = Program.FinancialPlans[Program.CurrentFinancialPlanId].Title;
+                    double subTotal = Program.FinancialPlans[Program.CurrentFinancialPlanId].GetTotalCost();
+                    Program.Header += $"[{financialPlanName}, R$ {subTotal.ToString(CultureInfo.InvariantCulture)}]";
+                }        
             }
             else
             {

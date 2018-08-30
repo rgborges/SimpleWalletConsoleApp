@@ -47,6 +47,16 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintSelectFinancialTask();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--select-plan":
+                            //TODO: Selects an plan to this instance
+                                Display.PrintSelectFinancialPlan();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--add-tag":
+                            //TODO: Adds a tag into the model
+                                Display.PrintAddNewTag();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--add-receive":
                             //TODO Adds an object to the model
                                 Display.PrintAddNewReceive();
@@ -87,6 +97,11 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintEditWallet();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
+                            case "--edit-transaction":
+                            //TODO: Edit a transaction
+                                Display.PrintEditTransaction();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
                             case "--display-wallets":
                             //TODO: Display last wallets
                                 Display.PrintWallets();
@@ -113,11 +128,22 @@ namespace SimpleWalletConsoleApp
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--dt-tag":
+                            //TODO: Displays tag
                                 Display.PrintWalletTransactionsWithTags();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--dt-task":
                                 Display.PrintFinancialTasksTransactions();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--dt-plan":
+                            //TODO: Display transactions registered on the plan selected only
+                                Display.PrintFinancialPlanTransactions();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--dt-plan-u":
+                            //TODO: Display transactions registered on the plan selected only with Uri
+                                Display.PrintFinancialPlanTransactionsWithUri();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--display-tasks":
@@ -128,6 +154,11 @@ namespace SimpleWalletConsoleApp
                             case "--display-info":
                             //TODO: Display user info
                                 Display.PrintInstanceInfo();
+                                Display.PrintTypeAnyKeyToConitinue();
+                            break;
+                            case "--remove-transaction":
+                            //TODO: Removes a transaction from the object selected on the model instance
+                                Display.PrintDeleteTransaction();
                                 Display.PrintTypeAnyKeyToConitinue();
                             break;
                             case "--exit":

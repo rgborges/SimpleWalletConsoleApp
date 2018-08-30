@@ -16,7 +16,7 @@ namespace SimpleWalletConsoleApp.Models.Function
         public Tag Tag {private set; get;}
         public DateTime RegisterDate {private set; get; }
         private List<Transaction> transactions;
-        private Tag defaultTag = new Tag("unknow", TagColor.Blue);
+        //Standard constructor
         public FinancialPlan(string title, Tag tag)
         {  
             if(string.IsNullOrEmpty(title))
@@ -29,6 +29,7 @@ namespace SimpleWalletConsoleApp.Models.Function
             this.Tag = tag;
             this.transactions = new List<Transaction>();
         }
+        //Adds a transaction to the plan
         public void AddTransaction(Transaction transaction)
         {
             if(transaction == null)
@@ -37,6 +38,43 @@ namespace SimpleWalletConsoleApp.Models.Function
             }
             transactions.Add(transaction);
         }
+        //Retuns the total cost
+        public double GetTotalCost()
+        {
+            double sum = 0;
+            var query = from item in transactions where item.Type == TransactionType.Spending select item;
+            foreach(Transaction p in query)
+            {
+                sum += p.Value;
+            }
+            return sum;
+        }
+        //Returns the total of receives
+        public double GetTotalReceives()
+        {
+            double sum = 0;
+            var query = from item in transactions where item.Type == TransactionType.Receive select item;
+            foreach(Transaction p in query)
+            {
+                sum += p.Value;
+            }
+            return sum;
+        }
+        //Returns all contained plan transactions
+        public List<Transaction> GetTransactions()
+        {
+            return transactions;
+        }
+        //Edits the tile name
+        public void EditTitle(string title)
+        {
+            if(string.IsNullOrEmpty(title) || string.IsNullOrWhiteSpace(title))
+            {
+                throw new NullReferenceException();
+            }
+            this.Title = title;
+        }
+        //Removes a transaction from the plan list
         public void RemoveTransaction(Transaction transaction)
         {
             if(transaction == null)
@@ -45,9 +83,21 @@ namespace SimpleWalletConsoleApp.Models.Function
             }
             transactions.Remove(transaction);
         }
+        //Removes a trasaction from the plan list by Guid
+        public void RemoveTransactionById(Guid guid)
+        {
+            int searchedIndex = transactions.FindIndex( x => x.Id == guid);
+            if(searchedIndex == -1)
+            {
+                throw new ItemNotFoundException("Was not possible to find the transactions in this list.");
+            }
+            Transaction reference = transactions[searchedIndex];
+            transactions.Remove(reference);
+        }
+        //Pass object to string Human like message
         public override string ToString()
         {
-            return $"Title: {this.Title}, Date: {this.RegisterDate}, Tag: {this.Tag.Name}, Guid: {this.Id}";
+            return $"Title: {this.Title}, Date: {this.RegisterDate}, Total Costs: {this.GetTotalCost().ToString("F2", CultureInfo.InvariantCulture)}, Tag: {this.Tag.Name}, Guid: {this.Id}";
         }
     }
 }

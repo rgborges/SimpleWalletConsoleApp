@@ -2,12 +2,12 @@ using System;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
-using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Objects;
 using SimpleWalletConsoleApp.Exceptions;
-using SimpleWalletConsoleApp.Models.Financial;
+using SimpleWalletConsoleApp.Objects.Financial;
 
 
-namespace SimpleWalletConsoleApp.Models.Function
+namespace SimpleWalletConsoleApp.Objects.Function
 {
     public class FinancialTask
     {

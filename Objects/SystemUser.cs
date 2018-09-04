@@ -1,6 +1,6 @@
 using System;
 
-namespace SimpleWalletConsoleApp.Models
+namespace SimpleWalletConsoleApp.Objects
 {
     public partial class SystemUser : Person
     {

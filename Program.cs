@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using SimpleWalletConsoleApp.Models;
-using SimpleWalletConsoleApp.Models.Financial;
-using SimpleWalletConsoleApp.Models.Function;
+using System.Collections.Generic;
+using SimpleWalletConsoleApp.Objects;
+using SimpleWalletConsoleApp.Objects.Financial;
+using SimpleWalletConsoleApp.Objects.Function;
 
 
 namespace SimpleWalletConsoleApp

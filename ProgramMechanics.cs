@@ -1,10 +1,10 @@
 using System;
 using System.Globalization;
 using System.Collections.Generic;
-using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Objects;
 using SimpleWalletConsoleApp.Exceptions;
-using SimpleWalletConsoleApp.Models.Financial;
-using SimpleWalletConsoleApp.Models.Function;
+using SimpleWalletConsoleApp.Objects.Financial;
+using SimpleWalletConsoleApp.Objects.Function;
 
 
 namespace SimpleWalletConsoleApp

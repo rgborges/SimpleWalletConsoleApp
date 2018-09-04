@@ -1,6 +1,6 @@
 using System;
 
-namespace SimpleWalletConsoleApp.Models.Financial
+namespace SimpleWalletConsoleApp.Objects.Financial
 {
     public enum CashFlow
     {

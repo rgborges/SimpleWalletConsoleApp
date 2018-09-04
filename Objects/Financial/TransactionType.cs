@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
-using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Objects;
 
-namespace SimpleWalletConsoleApp.Models.Financial
+namespace SimpleWalletConsoleApp.Objects.Financial
 {
     public enum TransactionType
     {

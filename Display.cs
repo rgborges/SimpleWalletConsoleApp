@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using System.Globalization;
 using System.Collections.Generic;
-using SimpleWalletConsoleApp.Models;
+using SimpleWalletConsoleApp.Objects;
 using SimpleWalletConsoleApp.Exceptions;
-using SimpleWalletConsoleApp.Models.Financial;
-using SimpleWalletConsoleApp.Models.Function;
+using SimpleWalletConsoleApp.Objects.Financial;
+using SimpleWalletConsoleApp.Objects.Function;
 
 
 namespace SimpleWalletConsoleApp
@@ -614,6 +614,18 @@ namespace SimpleWalletConsoleApp
             Console.WriteLine("Transaction removed sucessfully!");
             Console.WriteLine();
         }
+        private static void PrintDeleteWalletTransaction()
+        {
+            BusinessRules.ChecksIfWalletIsSelected();
+            Console.WriteLine("You've selected the delete transaction option");
+            Console.WriteLine($"You're in the wallet {Program.Wallets[Program.CurrentWalletIndex]}");
+            Console.Write("GUID: ");
+            Guid transactionToBeRemovedGuid = Guid.Parse(Console.ReadLine());
+            Program.Wallets[Program.CurrentWalletIndex].RemoveTransactionById(transactionToBeRemovedGuid);
+            Console.WriteLine();
+            Console.WriteLine("Transaction removed sucessfully!");
+            Console.WriteLine();
+        }
         //Prints all tags object in the model
         public static void PrintTags()
         {
@@ -695,7 +707,7 @@ namespace SimpleWalletConsoleApp
         public static void PrintTransactions()
         {
             BusinessRules.ChecksIfWalletIsSelected(); //Checks if exist a valid wallet selectd in the Program.cs
-            var query = from p in Program.Wallets[Program.CurrentWalletIndex].Transactions orderby p.Date descending select p;
+            var query = from p in Program.Wallets[Program.CurrentWalletIndex].transactions orderby p.Date descending select p;
             Console.WriteLine("Displaying all transactions: ");
             Console.WriteLine();
             foreach(Transaction p in query)

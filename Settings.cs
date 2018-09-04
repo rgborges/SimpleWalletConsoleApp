@@ -1,17 +1,22 @@
 using System;
 using System.Collections.Generic;
-using SimpleWalletConsoleApp.Models;
-using SimpleWalletConsoleApp.Models.Financial;
-using SimpleWalletConsoleApp.Models.Function;
+using SimpleWalletConsoleApp.Objects;
+using SimpleWalletConsoleApp.Objects.Financial;
+using SimpleWalletConsoleApp.Objects.Function;
 
 
 namespace SimpleWalletConsoleApp
 {
     public static class Settings
     {
+        //Application name
         public static string ApplicationName = "SimpleWallet";
-        public static string AplicationVersion = "0.0.7";
+        //Pre buil version
+        public static string AplicationVersion = "0.0.8";
+        //Currency Symbol
         public static string CurrentCurrencySymbol = "R$";
+        //Country
         public static string CurrentLocation = "Brazil";
+        
     }
 }

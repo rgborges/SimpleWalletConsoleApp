@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SimpleWalletConsoleApp.Objects;
 using SimpleWalletConsoleApp.Objects.Financial;
 using SimpleWalletConsoleApp.Objects.Function;
+using SimpleWalletConsoleApp.Objects.Logger;
 
 
 namespace SimpleWalletConsoleApp
@@ -18,10 +19,21 @@ namespace SimpleWalletConsoleApp
         public static List<FinancialPlan> FinancialPlans = new List<FinancialPlan>();
         public static int CurrentWalletIndex = -1, CurrentUserIndex = -1, CurrentFinancialTaskId = -1, CurrentFinancialPlanId = -1;
         public static string Header = Settings.ApplicationName;
+
+        //Configuração dos logs
+
+
+        public static Logger SystemLog = new Logger(@"C:\\tmp\\log.txt");
+    
+
         static void Main(string[] args)
         {
+            //Logging
+            SystemLog.Append($"[{DateTime.Now}] Initializing the system.");
+            SystemLog.Append($"[{DateTime.Now}] Adding debugging samples.");
             //Add debug sample
             Debug.AddDebugSamples();
+            SystemLog.Append($"[{DateTime.Now}] Adding debugging samples.");
             //Looping
             bool looping;
             looping = true;

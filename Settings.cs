@@ -17,6 +17,7 @@ namespace SimpleWalletConsoleApp
         public static string CurrentCurrencySymbol = "R$";
         //Country
         public static string CurrentLocation = "Brazil";
-        
+        //Log path
+        private static string installationPath = @"C:\\temp\\";
     }
 }

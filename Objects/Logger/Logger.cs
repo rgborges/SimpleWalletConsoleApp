@@ -6,7 +6,6 @@ namespace SimpleWalletConsoleApp.Objects.Logger
     public partial class Logger
     {
         private string path;
-
         public string Path { get => path; private set => path = value; }
         public Logger(string path)
         {
